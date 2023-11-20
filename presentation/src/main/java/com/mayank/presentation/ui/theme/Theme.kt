@@ -1,4 +1,4 @@
-package com.mayank.rick_morty.ui.theme
+package com.mayank.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

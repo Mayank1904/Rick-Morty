@@ -1,4 +1,4 @@
-package com.mayank.rick_morty.ui.theme
+package com.mayank.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
