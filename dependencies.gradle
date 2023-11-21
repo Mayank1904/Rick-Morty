@@ -119,6 +119,8 @@ ext {
             kotlin   : kotlinDependencies.kotlin,
             javax    : javaDependencies.javax,
             coroutine: coroutinesDependencies.coroutineCore,
+            daggerHilt    : [hiltDependencies.hiltAndroid],
+
     ]
 
     presentationModuleDependencies = [
