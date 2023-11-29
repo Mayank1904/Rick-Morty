@@ -10,8 +10,7 @@ class CharacterListMapper @Inject constructor(
 )  {
     fun mapFromModel(model: CharacterListModel): CharacterList {
         return with(model) {
-            CharacterList(info = infoMapper.mapFromModel(info),
-                characters = characters.map { characterMapper.mapFromModel(it) }
+            CharacterList(characters = characters.map { characterMapper.mapFromModel(it) }
             )
         }
     }

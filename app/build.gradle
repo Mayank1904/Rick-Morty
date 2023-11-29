@@ -12,14 +12,11 @@ android {
     defaultConfig {
         applicationId "com.mayank.rick_morty"
         minSdk 24
-        targetSdk 33
+        targetSdk androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        buildConfigField "String", "BASE_URL", "\"https://rickandmortyapi.com\""
     }
 
     buildTypes {
@@ -42,10 +39,7 @@ dependencies {
     implementation project(':domain')
     implementation project(':data')
     implementation project(':presentation')
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-
     // Dagger Hilt
     implementation hiltDependencies.hiltAndroid
     kapt hiltDependencies.hiltAndroidKapt
-    kapt hiltDependencies.hiltKapt
 }

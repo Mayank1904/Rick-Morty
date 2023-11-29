@@ -6,12 +6,12 @@ import javax.inject.Inject
 
 class CharacterListEntityMapper @Inject constructor(
     private val characterEntityMapper: CharacterEntityMapper,
-    private val infoEntityMapper: InfoEntityMapper
-)  {
-     fun mapFromEntity(entity: CharacterListEntity): CharacterListModel {
+) {
+    fun mapFromEntity(entity: CharacterListEntity): CharacterListModel {
         return with(entity) {
-            CharacterListModel(info = infoEntityMapper.mapFromEntity(info),
-                characters = characters.map { characterEntityMapper.mapFromEntity(it) }
+            CharacterListModel(characters = characters.map {
+                characterEntityMapper.mapFromEntity(it)
+            }
             )
         }
     }

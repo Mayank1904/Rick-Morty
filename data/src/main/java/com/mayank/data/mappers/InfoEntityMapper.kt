@@ -11,7 +11,7 @@ class InfoEntityMapper @Inject constructor() {
                 count = count,
                 next = next,
                 pages = pages,
-                prev = prev
+                prev = prev ?: ""
             )
         }
     }

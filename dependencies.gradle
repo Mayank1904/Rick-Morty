@@ -39,14 +39,17 @@ ext {
     // network dependencies
     retrofitVersion = '2.7.0'
     moshiConverterVersion = '2.7.0'
-    loggingInterceptorVersion = '4.2.1'
+    loggingInterceptorVersion = '4.9.2'
 
     // compose dependencies
     composeVersion = '1.7.2'
+    composeUiToolingVersion = '1.5.4'
 
     // test dependencies
     junitVersion = '4.13'
     mockitoKotlinVersion = '2.1.0'
+
+    coilVersion = '2.5.0'
 
     // Common dependencies
     kotlinDependencies = [
@@ -74,7 +77,8 @@ ext {
     hiltDependencies = [
             hiltAndroid    : "com.google.dagger:hilt-android:$hiltAndroidVersion",
             hiltAndroidKapt: "com.google.dagger:hilt-android-compiler:$hiltAndroidVersion",
-            hiltKapt       : "androidx.hilt:hilt-compiler:$hiltVersion"
+            hiltKapt       : "androidx.hilt:hilt-compiler:$hiltVersion",
+            hiltCompose    : "androidx.hilt:hilt-navigation-compose:1.1.0"
     ]
 
     coroutinesDependencies = [
@@ -87,18 +91,25 @@ ext {
             glideKapt: "com.github.bumptech.glide:compiler:$glideVersion"
     ]
 
+    coilDependencies = [
+            coil     : "io.coil-kt:coil:$coilVersion",
+            coilCompose: "io.coil-kt:coil-compose:$coilVersion"
+    ]
+
     networkDependencies = [
             retrofit          : "com.squareup.retrofit2:retrofit:$retrofitVersion",
             moshiConverter    : "com.squareup.retrofit2:converter-moshi:$moshiConverterVersion",
             loggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$loggingInterceptorVersion",
+            moshiKotlin       : "com.squareup.moshi:moshi-kotlin:1.14.0"
     ]
 
     composeDependencies = [
             compose              : "androidx.activity:activity-compose:$composeVersion",
             composeUi            : "androidx.compose.ui:ui",
             composeUiGraphics    : "androidx.compose.ui:ui-graphics",
-            composeToolingPreview: "androidx.compose.ui:ui-tooling-preview",
-            composeMaterial      : "androidx.compose.material3:material3"
+            composeToolingPreview: "androidx.compose.ui:ui-tooling-preview: $composeUiToolingVersion",
+            composeMaterial      : "androidx.compose.material:material:1.5.1",
+            navigationCompose    : "androidx.navigation:navigation-compose:2.7.5"
     ]
 
     dataModuleDependencies = [
@@ -107,7 +118,8 @@ ext {
             coroutine     : coroutinesDependencies.coroutineCore,
             network       : [networkDependencies.retrofit,
                              networkDependencies.moshiConverter,
-                             networkDependencies.loggingInterceptor],
+                             networkDependencies.loggingInterceptor,
+                             networkDependencies.moshiKotlin],
             daggerHilt    : [hiltDependencies.hiltAndroid],
             daggerHiltKapt: [hiltDependencies.hiltAndroidKapt,
                              hiltDependencies.hiltKapt],
@@ -120,6 +132,7 @@ ext {
             javax    : javaDependencies.javax,
             coroutine: coroutinesDependencies.coroutineCore,
             daggerHilt    : [hiltDependencies.hiltAndroid],
+            moshiKotlin       : "com.squareup.moshi:moshi-kotlin:1.14.0"
 
     ]
 
@@ -131,7 +144,7 @@ ext {
             kotlin               : kotlinDependencies.kotlin,
             javax                : javaDependencies.javax,
             // Dagger-Hilt
-            daggerHilt           : [hiltDependencies.hiltAndroid],
+            daggerHilt           : [hiltDependencies.hiltAndroid, hiltDependencies.hiltCompose],
             daggerHiltKapt       : [hiltDependencies.hiltAndroidKapt,
                                     hiltDependencies.hiltKapt],
             coroutine            : coroutinesDependencies.coroutineCore,
@@ -148,8 +161,10 @@ ext {
                     composeDependencies.composeMaterial,
                     composeDependencies.composeToolingPreview,
                     composeDependencies.composeUi,
-                    composeDependencies.composeUiGraphics
-            ]
+                    composeDependencies.composeUiGraphics,
+                    composeDependencies.navigationCompose],
+            coil                 : [coilDependencies.coil,
+                    coilDependencies.coilCompose]
 
     ]
 }

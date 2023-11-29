@@ -17,7 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        buildConfigField "String", "BASE_URL", "\"https://rickandmortyapi.com/api/\""
     }
     buildTypes {
         release {
@@ -42,6 +42,7 @@ dependencies {
     implementation dataModuleDependencies.network
     // Dagger Hilt
     implementation dataModuleDependencies.daggerHilt
+    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
     kapt dataModuleDependencies.daggerHiltKapt
 
     testImplementation testDependencies.coroutinesTest
