@@ -15,7 +15,7 @@ import com.mayank.presentation.features.homescreen.models.CharacterItem
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun CharacterListScreen() {
+fun CharacterListScreen(callback: (id: Int) -> Unit) {
     val viewModel: CharacterListViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
@@ -33,13 +33,12 @@ fun CharacterListScreen() {
             CharacterList(
                 characterList = (viewState.value as CharacterListViewState.Success).data.characters,
                 onItemClicked = {
-                    viewModel.sendIntent(CharacterListViewIntent.OnCharacterClick(it.id))
+                    callback.invoke(it.id)
                 }
             )
         }
         is CharacterListViewState.Error -> {}
     }
-
 }
 
 @Composable

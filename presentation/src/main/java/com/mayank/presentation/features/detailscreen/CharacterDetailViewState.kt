@@ -14,7 +14,7 @@ sealed interface CharacterDetailViewState: ViewState {
 }
 
 sealed interface CharacterDetailViewIntent: ViewIntent {
-    object LoadData: CharacterDetailViewIntent
+    class LoadData(val id: Int): CharacterDetailViewIntent
 }
 
 sealed interface CharacterDetailSideEffect: SideEffect {

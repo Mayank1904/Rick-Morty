@@ -1,6 +1,5 @@
 package com.mayank.presentation.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,27 +9,49 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.mayank.presentation.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.mayank.presentation.features.detailscreen.CharacterDetailViewIntent
+import com.mayank.presentation.features.detailscreen.CharacterDetailViewModel
+import com.mayank.presentation.features.detailscreen.CharacterDetailViewState
+import com.mayank.presentation.features.homescreen.models.CharacterItem
 
 @Composable
-fun CharacterDetailScreen() {
+fun CharacterDetailScreen(id: Int) {
+    val viewModel: CharacterDetailViewModel = hiltViewModel()
+    LaunchedEffect(Unit){
+        viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
+    }
+    val viewState = viewModel.stateSharedFlow.collectAsState(initial = CharacterDetailViewState.Loading)
 
+    when (viewState.value) {
+        is CharacterDetailViewState.Loading -> {
+            ProgressBar(modifier = Modifier.fillMaxSize())
+        }
+        is CharacterDetailViewState.Success -> {
+            DetailScreen((viewState.value as CharacterDetailViewState.Success).data)
+        }
+        is CharacterDetailViewState.Error -> {}
+    }
+
+}
+
+@Composable
+fun DetailScreen(data: CharacterItem) {
     Surface {
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
         ) {
             val (characterImage, cardContainer) = createRefs()
-
-            Image(
-                painter = painterResource(R.drawable.ic_launcher_background),
-                contentDescription = "",
+            CharacterImage(
+                imageUrl = data.image,
                 modifier = Modifier
                     .size(200.dp)
                     .constrainAs(characterImage) {
@@ -39,16 +60,6 @@ fun CharacterDetailScreen() {
                         top.linkTo(parent.top, 16.dp)
                     },
             )
-//            CharacterImage(
-//                imageUrl = "",
-//                modifier = Modifier
-//                    .size(200.dp)
-//                    .constrainAs(characterImage) {
-//                        start.linkTo(parent.start)
-//                        end.linkTo(parent.end)
-//                        top.linkTo(parent.top, 16.dp)
-//                    },
-//            )
 
             Card(
                 modifier = Modifier.constrainAs(
@@ -65,7 +76,7 @@ fun CharacterDetailScreen() {
                     val (characterNameText, leftContainer, rightContainer, genderLabelText, speciesLabelText, genderText, speciesText,
                         genderLocationLabelText, statusLabelText, genderLocationText, statusText) = createRefs()
 
-                    Text(text = "Mayank",
+                    Text(text = data.name,
                         style = MaterialTheme.typography.subtitle2,
                         modifier = Modifier
                             .padding(bottom = 25.dp)
@@ -81,16 +92,16 @@ fun CharacterDetailScreen() {
                         top.linkTo(characterNameText.bottom)
                         end.linkTo(parent.end)
                     }) {
-                        Text(text = "Mayank",
+                        Text(text = "Gender:",
                             style = MaterialTheme.typography.body1,
                         )
-                        Text(text = "Mayank",
+                        Text(text = data.gender,
                             style = MaterialTheme.typography.body1,
                         )
-                        Text(text = "Mayank",
+                        Text(text = "Location:",
                             style = MaterialTheme.typography.body1,
                         )
-                        Text(text = "Mayank",
+                        Text(text = data.characterLocation.name,
                             style = MaterialTheme.typography.body1,
                         )
                     }
@@ -99,16 +110,16 @@ fun CharacterDetailScreen() {
                         start.linkTo(parent.start)
                         top.linkTo(characterNameText.bottom)
                     }) {
-                        Text(text = "Mayank",
+                        Text(text = "Species:",
                             style = MaterialTheme.typography.body1,
                         )
-                        Text(text = "Mayank",
+                        Text(text = data.species,
                             style = MaterialTheme.typography.body1,
                         )
-                        Text(text = "Mayank",
+                        Text(text = "Status:",
                             style = MaterialTheme.typography.body1,
                         )
-                        Text(text = "Mayank",
+                        Text(text = data.status,
                             style = MaterialTheme.typography.body1,
                         )
                     }
@@ -128,5 +139,5 @@ fun CharacterDetailScreen() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    CharacterDetailScreen()
+    CharacterDetailScreen(1)
 }

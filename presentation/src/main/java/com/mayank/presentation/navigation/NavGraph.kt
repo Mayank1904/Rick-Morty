@@ -24,7 +24,9 @@ fun NavGraph(navController: NavHostController) {
                 title = stringResource(id = R.string.characters),
                 showBackButton = false,
                 onBackClicked = {}) {
-                CharacterListScreen()
+                CharacterListScreen {
+                        navController.navigate(NavigationScreens.CharacterDetailScreen.route + "/${it}")
+                }
             }
         }
         composable(
@@ -34,10 +36,14 @@ fun NavGraph(navController: NavHostController) {
             val characterId = navBackStackEntry.arguments?.getInt(characterId)
             characterId?.let {
                 BaseScreen(
-                    title = stringResource(id = R.string.characters),
+                    title = "Character Detail",
                     showBackButton = true,
-                    onBackClicked = { }) {
-                    CharacterDetailScreen()
+                    onBackClicked = {
+                        navController.popBackStack()
+                    }) {
+                    CharacterDetailScreen(
+                        id = characterId
+                    )
                 }
             }
         }

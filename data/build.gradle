@@ -45,6 +45,8 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.2.1"
     kapt dataModuleDependencies.daggerHiltKapt
 
+    testImplementation "io.mockk:mockk:1.13.8"
+
     testImplementation testDependencies.coroutinesTest
     testImplementation testDependencies.jUnit
     testImplementation testDependencies.mockitoKotlin
