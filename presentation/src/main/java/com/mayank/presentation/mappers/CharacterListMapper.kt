@@ -1,7 +1,7 @@
-package com.mayank.presentation.features.homescreen.mappers
+package com.mayank.presentation.mappers
 
 import com.mayank.domain.models.CharacterListModel
-import com.mayank.presentation.features.homescreen.models.CharacterList
+import com.mayank.presentation.models.CharacterList
 import javax.inject.Inject
 
 class CharacterListMapper @Inject constructor(

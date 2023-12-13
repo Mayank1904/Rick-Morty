@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.PagingData
 import com.mayank.presentation.features.homescreen.CharacterListViewModel
-import com.mayank.presentation.features.homescreen.models.CharacterItem
+import com.mayank.presentation.models.CharacterItem
 import com.mayank.presentation.navigation.NavGraph
 import com.mayank.presentation.ui.theme.RickMortyTheme
 import dagger.hilt.android.AndroidEntryPoint

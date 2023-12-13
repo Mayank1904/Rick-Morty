@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace 'com.mayank.rick_morty'
-    compileSdk 34
+    compileSdk androidCompileSdkVersion
 
     defaultConfig {
         applicationId "com.mayank.rick_morty"
-        minSdk 24
+        minSdk androidMinSdkVersion
         targetSdk androidTargetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASE_URL", "\"https://rickandmortyapi.com\""
     }

@@ -1,7 +1,7 @@
-package com.mayank.presentation.features.homescreen.mappers
+package com.mayank.presentation.mappers
 
 import com.mayank.domain.models.InfoModel
-import com.mayank.presentation.features.homescreen.models.Info
+import com.mayank.presentation.models.Info
 import javax.inject.Inject
 
 class InfoMapper @Inject constructor() {

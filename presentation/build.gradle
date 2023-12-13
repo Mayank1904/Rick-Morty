@@ -8,14 +8,7 @@ plugins {
 
 android {
     namespace 'com.mayank.presentation'
-    compileSdk 33
-
-    defaultConfig {
-        minSdk 24
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
-    }
+    compileSdk androidCompileSdkVersion
 
     buildTypes {
         release {
@@ -73,7 +66,9 @@ dependencies {
     implementation presentationModuleDependencies.coil
 
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
-
+    testImplementation "io.mockk:mockk:1.13.7"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation "app.cash.turbine:turbine:1.0.0"
     testImplementation testDependencies.coroutinesTest
     testImplementation testDependencies.jUnit
     testImplementation testDependencies.mockitoKotlin

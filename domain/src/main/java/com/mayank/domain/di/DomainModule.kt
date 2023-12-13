@@ -1,4 +1,4 @@
-package com.mayank.data.di
+package com.mayank.domain.di
 
 import com.mayank.domain.usecases.GetCharacterByIdUseCase
 import com.mayank.domain.usecases.GetCharacterByIdUseCaseImpl
@@ -13,8 +13,8 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ViewModelComponent::class)
 abstract class DomainModule {
     @Binds
-    abstract fun bindCharacterListUseCase(characterListUseCaseImpl: GetCharactersUseCaseImpl) : GetCharactersUseCase
+    abstract fun provideGetCharacterUseCase(getCharactersUseCaseImpl: GetCharactersUseCaseImpl): GetCharactersUseCase
 
     @Binds
-    abstract fun bindGetCharacterByIdUseCase(getCharacterByIdUseCaseImpl: GetCharacterByIdUseCaseImpl) : GetCharacterByIdUseCase
+    abstract fun provideGetCharacterByIdUseCase(getCharacterByIdUseCaseImpl: GetCharacterByIdUseCaseImpl): GetCharacterByIdUseCase
 }

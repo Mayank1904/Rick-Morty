@@ -52,7 +52,7 @@ object DataModule {
     fun provideBaseUrl() = BuildConfig.BASE_URL
 
     @Provides
-    fun provideMoshi() = Moshi
+    fun provideMoshi(): Moshi = Moshi
         .Builder()
         .add(KotlinJsonAdapterFactory())
         .build()

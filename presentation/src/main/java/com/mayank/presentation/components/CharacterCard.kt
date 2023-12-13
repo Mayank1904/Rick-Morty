@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mayank.presentation.features.homescreen.models.CharacterItem
+import com.mayank.presentation.models.CharacterItem
 
 @Composable
 fun CharacterCard(characterItem: CharacterItem, onItemClicked: (CharacterItem) -> Unit) {

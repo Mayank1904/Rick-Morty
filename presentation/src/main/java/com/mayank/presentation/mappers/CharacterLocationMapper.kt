@@ -1,7 +1,7 @@
-package com.mayank.presentation.features.homescreen.mappers
+package com.mayank.presentation.mappers
 
 import com.mayank.domain.models.CharacterLocationModel
-import com.mayank.presentation.features.homescreen.models.CharacterLocation
+import com.mayank.presentation.models.CharacterLocation
 import javax.inject.Inject
 
 class CharacterLocationMapper @Inject constructor() {

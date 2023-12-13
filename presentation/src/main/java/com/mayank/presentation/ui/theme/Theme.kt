@@ -4,7 +4,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-private val LightColorScheme = lightColors(
+private val lightColorScheme = lightColors(
     primary = Purple40,
     secondary = PurpleGrey40,
     surface = Purple40,
@@ -15,7 +15,7 @@ private val LightColorScheme = lightColors(
 fun RickMortyTheme(
     content: @Composable () -> Unit
 ) {
-    val colorScheme = LightColorScheme
+    val colorScheme = lightColorScheme
     MaterialTheme(
         colors = colorScheme,
         typography = Typography,

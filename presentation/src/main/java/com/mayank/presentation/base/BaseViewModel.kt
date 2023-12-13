@@ -2,16 +2,17 @@ package com.mayank.presentation.base
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
 abstract class BaseViewModel<VS: ViewState, VI: ViewIntent, SE: SideEffect>: ViewModel() {
 
-    protected val _state = MutableSharedFlow<VS>()
+    protected val state = MutableSharedFlow<VS>()
 
-    val stateSharedFlow: MutableSharedFlow<VS> get() = _state
+    val stateSharedFlow get() = state.asSharedFlow()
 
-    protected val _sideEffect = MutableSharedFlow<SE>()
+    protected val sideEffect = MutableSharedFlow<SE>()
 
-    val sideEffectSharedFlow: MutableSharedFlow<SE> get() = _sideEffect
+    val sideEffectSharedFlow get() = sideEffect.asSharedFlow()
     abstract fun sendIntent(intent: VI)
 
 }

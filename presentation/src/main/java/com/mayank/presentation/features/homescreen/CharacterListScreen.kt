@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mayank.presentation.components.CharacterCard
 import com.mayank.presentation.components.ProgressBar
-import com.mayank.presentation.features.homescreen.models.CharacterItem
+import com.mayank.presentation.models.CharacterItem
 
 @SuppressLint("UnrememberedMutableState")
 @Composable

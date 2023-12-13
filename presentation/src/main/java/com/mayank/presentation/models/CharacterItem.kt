@@ -1,4 +1,4 @@
-package com.mayank.presentation.features.homescreen.models
+package com.mayank.presentation.models
 
 data class CharacterItem(
     val created: String,

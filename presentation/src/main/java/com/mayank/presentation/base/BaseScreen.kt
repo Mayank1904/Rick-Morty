@@ -1,4 +1,4 @@
-package com.mayank.presentation.ui.common
+package com.mayank.presentation.base
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mayank.presentation.R
+import com.mayank.presentation.base.BaseScreen
 import com.mayank.presentation.components.CharacterDetailScreen
 import com.mayank.presentation.constant.Constant.characterId
 import com.mayank.presentation.features.homescreen.CharacterListScreen
-import com.mayank.presentation.ui.common.BaseScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {

@@ -1,4 +1,4 @@
-package com.mayank.presentation.components
+package com.mayank.presentation.features.detailscreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,10 +18,9 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.mayank.presentation.features.detailscreen.CharacterDetailViewIntent
-import com.mayank.presentation.features.detailscreen.CharacterDetailViewModel
-import com.mayank.presentation.features.detailscreen.CharacterDetailViewState
-import com.mayank.presentation.features.homescreen.models.CharacterItem
+import com.mayank.presentation.components.CharacterImage
+import com.mayank.presentation.components.ProgressBar
+import com.mayank.presentation.models.CharacterItem
 
 @Composable
 fun CharacterDetailScreen(id: Int) {

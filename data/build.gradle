@@ -3,19 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
 }
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
 android {
     compileSdk androidCompileSdkVersion
     defaultConfig {
-        minSdkVersion androidMinSdkVersion
-        targetSdkVersion androidTargetSdkVersion
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASE_URL", "\"https://rickandmortyapi.com/api/\""
     }
@@ -24,11 +14,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    buildToolsVersion buildToolsVersion
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -45,7 +30,9 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:3.2.1"
     kapt dataModuleDependencies.daggerHiltKapt
 
-    testImplementation "io.mockk:mockk:1.13.8"
+    testImplementation "io.mockk:mockk:1.13.7"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation "app.cash.turbine:turbine:1.0.0"
 
     testImplementation testDependencies.coroutinesTest
     testImplementation testDependencies.jUnit

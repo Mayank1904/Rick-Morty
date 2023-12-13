@@ -3,7 +3,7 @@ package com.mayank.presentation.features.homescreen
 import com.mayank.presentation.base.SideEffect
 import com.mayank.presentation.base.ViewIntent
 import com.mayank.presentation.base.ViewState
-import com.mayank.presentation.features.homescreen.models.CharacterList
+import com.mayank.presentation.models.CharacterList
 
 sealed interface CharacterListViewState: ViewState {
     object Loading: CharacterListViewState
