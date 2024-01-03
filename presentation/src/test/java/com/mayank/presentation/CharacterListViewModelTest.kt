@@ -1,8 +1,6 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package com.mayank.presentation
 
-import app.cash.turbine.test
+import android.net.http.HttpException
 import com.mayank.domain.usecases.GetCharactersUseCase
 import com.mayank.presentation.fakes.FakeData
 import com.mayank.presentation.features.homescreen.CharacterListViewIntent
@@ -29,7 +27,9 @@ class CharacterListViewModelTest {
 
     private var characterListMapper = mockk<CharacterListMapper>()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         MockKAnnotations.init()
@@ -39,17 +39,28 @@ class CharacterListViewModelTest {
 
     @Test
     fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() = runTest {
+        val data = FakeData.getCharactersList()
         coEvery { getCharactersUseCase() } returns FakeData.getCharacters()
 
         coEvery {
             characterListMapper.mapFromModel(FakeData.getCharacters().single())
-        } returns FakeData.getCharactersList()
+        } returns data
 
         characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
-        characterListViewModel.stateSharedFlow.test {
-            Assert.assertEquals(CharacterListViewState.Success(FakeData.getCharactersList()), awaitItem())
-            awaitComplete()
+        Assert.assertEquals(CharacterListViewState.Success(data), characterListViewModel.stateFlow.value)
+    }
+
+    @Test(expected = HttpException::class)
+    fun `get characters should return error from use-case`() =
+        runTest {
+            coEvery {
+                getCharactersUseCase()
+            } answers { throw HttpException(ERROR_MESSAGE, Throwable()) }
+            characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
         }
 
+    private companion object {
+        const val ERROR_MESSAGE = "Internal Server Error"
+        const val ID = 23
     }
 }

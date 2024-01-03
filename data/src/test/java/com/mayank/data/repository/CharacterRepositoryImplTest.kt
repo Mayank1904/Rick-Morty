@@ -18,6 +18,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -73,7 +74,7 @@ class CharacterRepositoryImplTest {
         val exception = retrofit2.HttpException(
             Response.error<ResponseBody>(
                 503,
-                ResponseBody.create("plain/text".toMediaTypeOrNull(), "Address no found")
+                "Address no found".toResponseBody("plain/text".toMediaTypeOrNull())
             )
         )
 
@@ -82,7 +83,7 @@ class CharacterRepositoryImplTest {
         }
         characterRepositoryImpl.getCharacters().test {
             Assert.assertEquals(exception, awaitError())
-            awaitComplete()
+            awaitError()
         }
 
     }
@@ -108,7 +109,7 @@ class CharacterRepositoryImplTest {
         val exception = retrofit2.HttpException(
             Response.error<ResponseBody>(
                 503,
-                ResponseBody.create("plain/text".toMediaTypeOrNull(), "Address no found")
+                "Address no found".toResponseBody("plain/text".toMediaTypeOrNull())
             )
         )
 
@@ -117,10 +118,11 @@ class CharacterRepositoryImplTest {
         }
         characterRepositoryImpl.getCharacters().test {
             Assert.assertEquals(exception, awaitError())
-            awaitComplete()
+            awaitError()
         }
 
     }
+
 
     @After
     @OptIn(ExperimentalCoroutinesApi::class)

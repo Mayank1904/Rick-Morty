@@ -34,4 +34,6 @@ class CharacterDetailViewModel @Inject constructor(private val characterByIdUseC
             }
         }
     }
+
+    override fun createInitialState() = CharacterDetailViewState.Loading
 }

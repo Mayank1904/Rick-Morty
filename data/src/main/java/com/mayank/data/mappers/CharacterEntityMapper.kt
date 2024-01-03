@@ -14,7 +14,7 @@ class CharacterEntityMapper @Inject constructor(
                 gender = gender,
                 id = id,
                 image = image,
-                characterLocation = characterLocationEntityMapper.mapFromEntity(characterLocation),
+                characterLocation = characterLocationEntityMapper.mapFromEntity(location),
                 name = name,
                 species = species,
                 status = status,

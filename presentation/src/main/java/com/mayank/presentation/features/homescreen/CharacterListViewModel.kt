@@ -40,4 +40,6 @@ class CharacterListViewModel @Inject constructor(private val getCharactersUseCas
             is CharacterListViewIntent.OnCharacterClick -> navigateToDetails(intent.id)
         }
     }
+
+    override fun createInitialState() = CharacterListViewState.Loading
 }

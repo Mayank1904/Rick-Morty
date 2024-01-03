@@ -9,7 +9,7 @@ class CharacterListEntityMapper @Inject constructor(
 ) {
     fun mapFromEntity(entity: CharacterListEntity): CharacterListModel {
         return with(entity) {
-            CharacterListModel(characters = characters.map {
+            CharacterListModel(characters = results.map {
                 characterEntityMapper.mapFromEntity(it)
             }
             )

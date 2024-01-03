@@ -17,7 +17,7 @@ class CharacterLocationEntityMapperTest {
     fun `GIVEN Character Location Entity WHEN mapFromEntity method called THEN converted Location Model return`()
         {
             val characterLocation =
-                FakeCharactersList.getCharactersList().characters[0].characterLocation
+                FakeCharactersList.getCharactersList().results[0].location
 
             val locationMapper = characterLocationEntityMapper.mapFromEntity(characterLocation)
 

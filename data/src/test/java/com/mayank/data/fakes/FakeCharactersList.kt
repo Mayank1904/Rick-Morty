@@ -9,7 +9,7 @@ import com.mayank.domain.models.CharacterModel
 
 object FakeCharactersList {
         fun getCharactersList() = CharacterListEntity(
-            characters = arrayListOf(
+            results = arrayListOf(
                 CharacterEntity(
                     created = "2017-11-05T09:31:08.952Z",
                     gender = "unknown",
@@ -20,7 +20,7 @@ object FakeCharactersList {
                     status = "Alive",
                     type = "Hivemind",
                     url = "https://rickandmortyapi.com/api/character/36",
-                    characterLocation = CharacterLocationEntity(
+                    location = CharacterLocationEntity(
                         name = "Earth",
                         url = ""
                     )
@@ -38,7 +38,7 @@ object FakeCharactersList {
                     status = "Alive",
                     type = "Hivemind",
                     url = "https://rickandmortyapi.com/api/character/36",
-                    characterLocation = CharacterLocationEntity(
+            location = CharacterLocationEntity(
                         name = "Earth",
                         url = ""
             )

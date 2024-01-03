@@ -25,10 +25,10 @@ import com.mayank.presentation.models.CharacterItem
 @Composable
 fun CharacterDetailScreen(id: Int) {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
     }
-    val viewState = viewModel.stateSharedFlow.collectAsState(initial = CharacterDetailViewState.Loading)
+    val viewState = viewModel.stateFlow.collectAsState(initial = CharacterDetailViewState.Loading)
 
     when (viewState.value) {
         is CharacterDetailViewState.Loading -> {

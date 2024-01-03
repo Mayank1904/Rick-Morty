@@ -27,13 +27,11 @@ dependencies {
     implementation dataModuleDependencies.network
     // Dagger Hilt
     implementation dataModuleDependencies.daggerHilt
-    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
     kapt dataModuleDependencies.daggerHiltKapt
 
     testImplementation "io.mockk:mockk:1.13.7"
     testImplementation "androidx.arch.core:core-testing:2.2.0"
     testImplementation "app.cash.turbine:turbine:1.0.0"
-
     testImplementation testDependencies.coroutinesTest
     testImplementation testDependencies.jUnit
     testImplementation testDependencies.mockitoKotlin

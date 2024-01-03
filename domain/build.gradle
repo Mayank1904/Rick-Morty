@@ -14,11 +14,9 @@ dependencies {
     implementation domainModuleDependencies.daggerHilt
     kapt dataModuleDependencies.daggerHiltKapt
     implementation domainModuleDependencies.moshiKotlin
-    implementation 'androidx.paging:paging-common-ktx:3.2.1'
     testImplementation testDependencies.coroutinesTest
     testImplementation testDependencies.jUnit
     testImplementation testDependencies.mockitoKotlin
     testImplementation "io.mockk:mockk:1.13.7"
     testImplementation "androidx.arch.core:core-testing:2.2.0"
-    testImplementation "app.cash.turbine:turbine:1.0.0"
 }

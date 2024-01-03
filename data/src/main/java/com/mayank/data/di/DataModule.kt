@@ -9,16 +9,15 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ViewModelComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object DataModule {
     private const val OK_HTTP_TIMEOUT = 60L
 
@@ -28,7 +27,6 @@ object DataModule {
     }
 
     @Provides
-    @Singleton
     fun provideCharacterService(baseUrl: String, moshi: Moshi): CharacterService {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         return Retrofit.Builder().baseUrl(baseUrl)

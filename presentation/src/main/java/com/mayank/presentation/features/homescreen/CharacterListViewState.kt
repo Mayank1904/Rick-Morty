@@ -8,9 +8,9 @@ import com.mayank.presentation.models.CharacterList
 sealed interface CharacterListViewState: ViewState {
     object Loading: CharacterListViewState
 
-    class Success(val data: CharacterList) : CharacterListViewState
+    data class Success(val data: CharacterList) : CharacterListViewState
 
-    class Error(val throwable: Throwable): CharacterListViewState
+    data class Error(val throwable: Throwable): CharacterListViewState
 }
 
 sealed interface CharacterListViewIntent: ViewIntent {

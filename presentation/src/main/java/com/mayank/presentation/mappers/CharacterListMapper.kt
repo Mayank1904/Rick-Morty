@@ -5,8 +5,7 @@ import com.mayank.presentation.models.CharacterList
 import javax.inject.Inject
 
 class CharacterListMapper @Inject constructor(
-    private val characterMapper: CharacterMapper,
-    private val infoMapper: InfoMapper
+    private val characterMapper: CharacterMapper
 )  {
     fun mapFromModel(model: CharacterListModel): CharacterList {
         return with(model) {

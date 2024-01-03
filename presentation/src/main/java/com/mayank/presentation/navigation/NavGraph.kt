@@ -9,8 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.mayank.presentation.R
 import com.mayank.presentation.base.BaseScreen
-import com.mayank.presentation.components.CharacterDetailScreen
 import com.mayank.presentation.constant.Constant.characterId
+import com.mayank.presentation.features.detailscreen.CharacterDetailScreen
 import com.mayank.presentation.features.homescreen.CharacterListScreen
 
 @Composable

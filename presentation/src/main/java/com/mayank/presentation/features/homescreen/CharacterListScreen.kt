@@ -23,7 +23,7 @@ fun CharacterListScreen(callback: (id: Int) -> Unit) {
     }
 
     val viewState =
-        viewModel.stateSharedFlow.collectAsState(initial = CharacterListViewState.Loading)
+        viewModel.stateFlow.collectAsState(initial = CharacterListViewState.Loading)
 
     when (viewState.value) {
         is CharacterListViewState.Loading -> {
