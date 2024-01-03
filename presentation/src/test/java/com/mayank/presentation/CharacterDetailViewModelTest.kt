@@ -22,6 +22,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CharacterDetailViewModelTest {
     private lateinit var characterDetailViewModel: CharacterDetailViewModel
 
@@ -29,9 +30,7 @@ class CharacterDetailViewModelTest {
 
     private var characterMapper = mockk<CharacterMapper>()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         MockKAnnotations.init()
@@ -40,7 +39,7 @@ class CharacterDetailViewModelTest {
     }
 
     @Test
-    fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() = runTest {
+    fun `fetch character detail successfully GIVEN intent WHEN loadData called THEN verify`() = runTest {
         val data = FakeData.getCharactersList().characters[0]
         coEvery { getCharacterByIdUseCase(ID) } returns FakeData.getCharacter()
 
@@ -53,7 +52,7 @@ class CharacterDetailViewModelTest {
     }
 
     @Test(expected = HttpException::class, timeout = 1L)
-    fun `get characters should return error from use-case`() =
+    fun `fetch character detail should return error from use-case`() =
         runTest {
             coEvery {
                 getCharacterByIdUseCase(ID)
@@ -66,9 +65,8 @@ class CharacterDetailViewModelTest {
         const val ID = 23
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @After
-    fun clean() {
+    fun tearDown() {
         Dispatchers.resetMain()
     }
 }

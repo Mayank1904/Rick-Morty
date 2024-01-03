@@ -1,6 +1,5 @@
 package com.mayank.data.repository
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.mayank.data.api.CharacterService
 import com.mayank.data.fakes.FakeCharactersList
@@ -22,7 +21,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
 
@@ -31,8 +29,6 @@ import retrofit2.Response
 class CharacterRepositoryImplTest {
     private lateinit var characterRepositoryImpl: CharacterRepositoryImpl
 
-    @get:Rule
-    private var instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = StandardTestDispatcher()
 
     @MockK
@@ -123,14 +119,11 @@ class CharacterRepositoryImplTest {
 
     }
 
-
     @After
-    @OptIn(ExperimentalCoroutinesApi::class)
     fun tearDown() {
         Dispatchers.resetMain()
     }
     private companion object {
         const val ID = 23
     }
-
 }

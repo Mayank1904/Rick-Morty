@@ -17,7 +17,6 @@ class CharacterListEntityMapperTest {
 
     @Test
     fun `GIVEN character list entity when mapFromEntity method called then return converted characterList`() {
-
         every {
             characterEntityMapper.mapFromEntity(FakeCharactersList.getCharacter())
         } returns FakeCharactersList.getCharacterModel()

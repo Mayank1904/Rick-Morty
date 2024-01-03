@@ -14,12 +14,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CharacterListViewModelTest {
     private lateinit var characterListViewModel: CharacterListViewModel
 
@@ -27,9 +30,7 @@ class CharacterListViewModelTest {
 
     private var characterListMapper = mockk<CharacterListMapper>()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setUp() {
         MockKAnnotations.init()
@@ -51,7 +52,7 @@ class CharacterListViewModelTest {
     }
 
     @Test(expected = HttpException::class)
-    fun `get characters should return error from use-case`() =
+    fun `fetch character list should return error from use-case`() =
         runTest {
             coEvery {
                 getCharactersUseCase()
@@ -61,6 +62,10 @@ class CharacterListViewModelTest {
 
     private companion object {
         const val ERROR_MESSAGE = "Internal Server Error"
-        const val ID = 23
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 }
