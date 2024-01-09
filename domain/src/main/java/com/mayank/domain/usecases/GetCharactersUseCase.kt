@@ -1,8 +1,8 @@
 package com.mayank.domain.usecases
 
-import com.mayank.domain.models.CharacterListModel
-import kotlinx.coroutines.flow.Flow
+import com.mayank.domain.repository.CharacterRepository
+import javax.inject.Inject
 
-interface GetCharactersUseCase {
-    suspend operator fun invoke() : Flow<CharacterListModel>
+class GetCharactersUseCaseImpl @Inject constructor(private val repository: CharacterRepository) {
+    suspend operator fun invoke() = repository.getCharacters()
 }
