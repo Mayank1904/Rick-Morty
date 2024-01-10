@@ -5,30 +5,37 @@ import com.mayank.domain.usecases.GetCharacterByIdUseCase
 import com.mayank.presentation.base.BaseViewModel
 import com.mayank.presentation.mappers.CharacterMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterDetailViewModel @Inject constructor(private val characterByIdUseCase: GetCharacterByIdUseCase,
-                                                   private val characterMapper: CharacterMapper
+class CharacterDetailViewModel @Inject constructor(
+    private val characterByIdUseCase: GetCharacterByIdUseCase,
+    private val characterMapper: CharacterMapper
 ) :
     BaseViewModel<CharacterDetailViewState, CharacterDetailViewIntent, CharacterDetailSideEffect>() {
 
-    private fun fetchCharacterList(id: Int){
+    private fun fetchCharacterList(id: Int) {
         viewModelScope.launch {
-            characterByIdUseCase(id).onStart {
-                state.emit(CharacterDetailViewState.Loading)
-            }.catch {
-                state.emit(CharacterDetailViewState.Error(it))
-            }.collect{
-                state.emit(CharacterDetailViewState.Success(characterMapper.mapFromModel(it)))
+            characterByIdUseCase(id).collectLatest { result ->
+                when {
+                    result.isSuccess -> state.emit(
+                        CharacterDetailViewState.Success(
+                            characterMapper.mapFromModel(
+                                result.getOrNull()!!
+                            )
+                        )
+                    )
+
+                    result.isFailure -> state.emit(CharacterDetailViewState.Error(result.exceptionOrNull()!!))
+                }
             }
         }
     }
+
     override fun sendIntent(intent: CharacterDetailViewIntent) {
-        when(intent){
+        when (intent) {
             is CharacterDetailViewIntent.LoadData -> {
                 fetchCharacterList(intent.id)
             }

@@ -9,7 +9,7 @@ private val lightColorScheme = lightColors(
     secondary = PurpleGrey40,
     surface = Purple40,
     background = white,
-    )
+)
 
 @Composable
 fun RickMortyTheme(

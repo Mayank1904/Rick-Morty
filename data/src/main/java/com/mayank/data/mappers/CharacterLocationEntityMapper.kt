@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CharacterLocationEntityMapper @Inject constructor() {
     fun mapFromEntity(entity: CharacterLocationEntity): CharacterLocationModel {
         return with(entity) {
-            CharacterLocationModel(name = name, url = url) 
+            CharacterLocationModel(name = name, url = url)
         }
     }
 }

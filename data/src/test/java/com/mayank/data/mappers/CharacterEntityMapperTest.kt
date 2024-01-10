@@ -8,11 +8,11 @@ import org.junit.Before
 import org.junit.Test
 
 class CharacterEntityMapperTest {
-    private lateinit var characterEntityMapper : CharacterEntityMapper
+    private lateinit var characterEntityMapper: CharacterEntityMapper
     private val characterLocationEntityMapper = mockk<CharacterLocationEntityMapper>()
 
     @Before
-    fun setup(){
+    fun setup() {
         characterEntityMapper = CharacterEntityMapper(characterLocationEntityMapper)
     }
 

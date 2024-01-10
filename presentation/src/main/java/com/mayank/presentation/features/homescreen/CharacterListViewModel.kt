@@ -1,29 +1,43 @@
 package com.mayank.presentation.features.homescreen
 
 import androidx.lifecycle.viewModelScope
+import com.mayank.domain.models.CharacterListModel
 import com.mayank.domain.usecases.GetCharactersUseCase
 import com.mayank.presentation.base.BaseViewModel
 import com.mayank.presentation.mappers.CharacterListMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterListViewModel @Inject constructor(private val getCharactersUseCase: GetCharactersUseCase,
-                                                 private val characterListMapper: CharacterListMapper
+class CharacterListViewModel @Inject constructor(
+    private val getCharactersUseCase: GetCharactersUseCase,
+    private val characterListMapper: CharacterListMapper
 ) :
     BaseViewModel<CharacterListViewState, CharacterListViewIntent, CharacterListSideEffect>() {
 
-    private fun fetchCharacterList(){
+    private fun fetchCharacterList() {
         viewModelScope.launch {
-            getCharactersUseCase().onStart {
-                state.emit(CharacterListViewState.Loading)
-            }.catch {
-                state.emit(CharacterListViewState.Error(it))
-            }.collect{
-                state.emit(CharacterListViewState.Success(characterListMapper.mapFromModel(it)))
+            getCharactersUseCase().collectLatest { result ->
+                when {
+                    result.isSuccess -> {
+                        state.emit(
+                            CharacterListViewState.Success(
+                                characterListMapper.mapFromModel(
+                                    result.getOrDefault(
+                                        CharacterListModel(listOf())
+                                    )
+                                )
+                            )
+                        )
+                    }
+
+                    result.isFailure -> {
+                        state.emit(CharacterListViewState.Error(result.exceptionOrNull()!!))
+
+                    }
+                }
             }
         }
     }
@@ -34,8 +48,9 @@ class CharacterListViewModel @Inject constructor(private val getCharactersUseCas
         }
 
     }
+
     override fun sendIntent(intent: CharacterListViewIntent) {
-        when(intent){
+        when (intent) {
             is CharacterListViewIntent.LoadData -> fetchCharacterList()
             is CharacterListViewIntent.OnCharacterClick -> navigateToDetails(intent.id)
         }

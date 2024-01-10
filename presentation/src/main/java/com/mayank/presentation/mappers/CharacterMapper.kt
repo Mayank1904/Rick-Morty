@@ -6,11 +6,10 @@ import javax.inject.Inject
 
 class CharacterMapper @Inject constructor(
     private val characterLocationMapper: CharacterLocationMapper
-)  {
-     fun mapFromModel(model: CharacterModel): CharacterItem {
+) {
+    fun mapFromModel(model: CharacterModel): CharacterItem {
         return with(model) {
             CharacterItem(
-                created = created,
                 gender = gender,
                 id = id,
                 image = image,
@@ -18,9 +17,7 @@ class CharacterMapper @Inject constructor(
                 name = name,
                 species = species,
                 status = status,
-                type = type,
-                url = url,
-                )
+            )
         }
     }
 }

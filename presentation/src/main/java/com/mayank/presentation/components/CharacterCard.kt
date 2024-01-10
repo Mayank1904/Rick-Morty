@@ -15,7 +15,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.mayank.presentation.R
 import com.mayank.presentation.models.CharacterItem
 
 @Composable
@@ -58,7 +60,7 @@ fun CharacterContent(characterItem: CharacterItem) {
         )
 
         Text(
-            text = "Last Know Location:",
+            text = stringResource(R.string.last_known_parents),
             style = MaterialTheme.typography.subtitle1
         )
 

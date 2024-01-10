@@ -3,22 +3,14 @@ package com.mayank.presentation.fakes
 import com.mayank.domain.models.CharacterListModel
 import com.mayank.domain.models.CharacterLocationModel
 import com.mayank.domain.models.CharacterModel
-import com.mayank.presentation.dtos.CharacterList
 import com.mayank.presentation.models.CharacterItem
+import com.mayank.presentation.models.CharacterList
 import com.mayank.presentation.models.CharacterLocation
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 object FakeData {
-    fun getCharacters(): Flow<CharacterListModel> = flow {
-        val characters = getCharacterListModel()
-        emit(characters)
-    }
+    fun getCharacters(): CharacterListModel = getCharacterListModel()
 
-    fun getCharacter() : Flow<CharacterModel> = flow {
-        val characterModel = getCharacterModel()
-        emit(characterModel)
-    }
+    fun getCharacter(): CharacterModel = getCharacterModel()
 
     fun getCharactersList() = CharacterList(
         characters = arrayListOf(

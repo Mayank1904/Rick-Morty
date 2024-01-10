@@ -4,28 +4,33 @@ import com.mayank.domain.fakes.FakeData
 import com.mayank.domain.repository.CharacterRepository
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import io.mockk.MockKAnnotations
 import io.mockk.coEvery
+import io.mockk.junit4.MockKRule
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import java.io.IOException
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class GetCharacterByIdUseCaseTest {
+    @get:Rule
+    val mockkRule = MockKRule(this)
     private val characterRepository = mockk<CharacterRepository>()
-    private lateinit var getCharacterByIdUseCaseImpl: GetCharacterByIdUseCaseImpl
+    private lateinit var getCharacterByIdUseCaseImpl: GetCharacterByIdUseCase
 
     @Before
     fun setup() {
-        MockKAnnotations.init()
-        getCharacterByIdUseCaseImpl = GetCharacterByIdUseCaseImpl(characterRepository)
+        getCharacterByIdUseCaseImpl = GetCharacterByIdUseCase(characterRepository)
     }
 
     @Test
     fun `GIVEN id WHEN use-case invoke called THEN character detail return`() = runTest {
         val character = FakeData.getCharacter()
-        coEvery { characterRepository.getCharacter(ID) } returns character
+        coEvery { characterRepository.getCharacter(ID) } returns flowOf(Result.success(character))
 
         getCharacterByIdUseCaseImpl(ID)
 

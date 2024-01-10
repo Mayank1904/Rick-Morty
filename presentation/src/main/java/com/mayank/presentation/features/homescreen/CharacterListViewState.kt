@@ -5,20 +5,20 @@ import com.mayank.presentation.base.ViewIntent
 import com.mayank.presentation.base.ViewState
 import com.mayank.presentation.models.CharacterList
 
-sealed interface CharacterListViewState: ViewState {
-    object Loading: CharacterListViewState
+sealed interface CharacterListViewState : ViewState {
+    object Loading : CharacterListViewState
 
     data class Success(val data: CharacterList) : CharacterListViewState
 
-    data class Error(val throwable: Throwable): CharacterListViewState
+    data class Error(val throwable: Throwable) : CharacterListViewState
 }
 
-sealed interface CharacterListViewIntent: ViewIntent {
-    object LoadData: CharacterListViewIntent
+sealed interface CharacterListViewIntent : ViewIntent {
+    object LoadData : CharacterListViewIntent
 
-    class OnCharacterClick(val id: Int): CharacterListViewIntent
+    class OnCharacterClick(val id: Int) : CharacterListViewIntent
 }
 
-sealed interface CharacterListSideEffect: SideEffect {
+sealed interface CharacterListSideEffect : SideEffect {
     class NavigateToDetails(val id: Int) : CharacterListSideEffect
 }

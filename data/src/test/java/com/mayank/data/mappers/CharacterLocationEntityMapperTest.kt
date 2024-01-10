@@ -14,15 +14,14 @@ class CharacterLocationEntityMapperTest {
     }
 
     @Test
-    fun `GIVEN Character Location Entity WHEN mapFromEntity method called THEN converted Location Model return`()
-        {
-            val characterLocation =
-                FakeCharactersList.getCharactersList().results[0].location
+    fun `GIVEN Character Location Entity WHEN mapFromEntity method called THEN converted Location Model return`() {
+        val characterLocation =
+            FakeCharactersList.getCharactersList().results[0].location
 
-            val locationMapper = characterLocationEntityMapper.mapFromEntity(characterLocation)
+        val locationMapper = characterLocationEntityMapper.mapFromEntity(characterLocation)
 
-            Assert.assertEquals(locationMapper.name, LOCATION_NAME)
-        }
+        Assert.assertEquals(locationMapper.name, LOCATION_NAME)
+    }
 
     private companion object {
         const val LOCATION_NAME = "Earth"

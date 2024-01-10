@@ -5,47 +5,42 @@ import com.mayank.data.api.CharacterService
 import com.mayank.data.fakes.FakeCharactersList
 import com.mayank.data.mappers.CharacterEntityMapper
 import com.mayank.data.mappers.CharacterListEntityMapper
-import io.mockk.MockKAnnotations
+import com.mayank.domain.models.CharacterListModel
+import com.mayank.domain.models.CharacterModel
 import io.mockk.coEvery
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
+import io.mockk.junit4.MockKRule
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import retrofit2.Response
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CharacterRepositoryImplTest {
+    @get:Rule
+    val mockkRule = MockKRule(this)
+
     private lateinit var characterRepositoryImpl: CharacterRepositoryImpl
 
-    private val testDispatcher = StandardTestDispatcher()
+    private val characterService = mockk<CharacterService>()
+    private val characterListEntityMapper = mockk<CharacterListEntityMapper>()
 
-    @MockK
-    private lateinit var characterService: CharacterService
-    @MockK
-    private lateinit var characterListEntityMapper: CharacterListEntityMapper
-    @MockK
-    private lateinit var characterEntityMapper: CharacterEntityMapper
+    private val characterEntityMapper = mockk<CharacterEntityMapper>()
 
     @Before
-    fun setUp(){
-        MockKAnnotations.init(this)
-        Dispatchers.setMain(testDispatcher)
+    fun setUp() {
         characterRepositoryImpl = CharacterRepositoryImpl(
             characterService,
             characterListEntityMapper,
-            characterEntityMapper
+            characterEntityMapper,
+            dispatcher = Dispatchers.IO
         )
     }
 
@@ -60,29 +55,25 @@ class CharacterRepositoryImplTest {
         every { characterListEntityMapper.mapFromEntity(characterList) } returns characterListModel
 
         characterRepositoryImpl.getCharacters().test {
-            Assert.assertEquals(characterListModel, awaitItem())
+            Assert.assertEquals(Result.success(characterListModel), awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `GIVEN exception thrown WHEN character api call is made THEN should return exception`() = runTest {
-        val exception = retrofit2.HttpException(
-            Response.error<ResponseBody>(
-                503,
-                "Address no found".toResponseBody("plain/text".toMediaTypeOrNull())
-            )
-        )
+    fun `GIVEN exception thrown WHEN character api call is made THEN should return exception`() =
+        runTest {
 
-        coEvery { characterService.getCharacters() } coAnswers {
-            throw exception
-        }
-        characterRepositoryImpl.getCharacters().test {
-            Assert.assertEquals(exception, awaitError())
-            awaitError()
-        }
+            val exception = Exception()
+            coEvery { characterService.getCharacters() } coAnswers {
+                throw exception
+            }
+            characterRepositoryImpl.getCharacters().test {
+                Assert.assertEquals(Result.failure<CharacterListModel>(exception), awaitItem())
+                awaitComplete()
+            }
 
-    }
+        }
 
     @Test
     fun `GIVEN id fetch character WHEN characters api call THEN should return list`() = runTest {
@@ -95,34 +86,31 @@ class CharacterRepositoryImplTest {
         every { characterEntityMapper.mapFromEntity(characterItem) } returns characterModel
 
         characterRepositoryImpl.getCharacter(ID).test {
-            Assert.assertEquals(characterModel, awaitItem())
+            Assert.assertEquals(Result.success(characterModel), awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `GIVEN exception thrown WHEN character details api call is made THEN should return exception`() = runTest {
-        val exception = retrofit2.HttpException(
-            Response.error<ResponseBody>(
-                503,
-                "Address no found".toResponseBody("plain/text".toMediaTypeOrNull())
-            )
-        )
+    fun `GIVEN exception thrown WHEN character details api call is made THEN should return exception`() =
+        runTest {
+            val exception = Exception()
 
-        coEvery { characterService.getCharacters() } coAnswers {
-            throw exception
-        }
-        characterRepositoryImpl.getCharacters().test {
-            Assert.assertEquals(exception, awaitError())
-            awaitError()
-        }
+            coEvery { characterService.getCharacter(ID) } coAnswers {
+                throw exception
+            }
+            characterRepositoryImpl.getCharacter(ID).test {
+                Assert.assertEquals(Result.failure<CharacterModel>(exception), awaitItem())
+                awaitComplete()
+            }
 
-    }
+        }
 
     @After
     fun tearDown() {
         Dispatchers.resetMain()
     }
+
     private companion object {
         const val ID = 23
     }

@@ -23,9 +23,11 @@ fun NavGraph(navController: NavHostController) {
             BaseScreen(
                 title = stringResource(id = R.string.characters),
                 showBackButton = false,
-                onBackClicked = {}) {
+                onBackClicked = {
+
+                }) {
                 CharacterListScreen {
-                        navController.navigate(NavigationScreens.CharacterDetailScreen.route + "/${it}")
+                    navController.navigate(NavigationScreens.CharacterDetailScreen.route + "/${it}")
                 }
             }
         }
@@ -36,7 +38,7 @@ fun NavGraph(navController: NavHostController) {
             val characterId = navBackStackEntry.arguments?.getInt(characterId)
             characterId?.let {
                 BaseScreen(
-                    title = "Character Detail",
+                    title = stringResource(R.string.character_detail),
                     showBackButton = true,
                     onBackClicked = {
                         navController.popBackStack()

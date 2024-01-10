@@ -10,8 +10,9 @@ import org.junit.Test
 class CharacterListEntityMapperTest {
     private var characterEntityMapper = mockk<CharacterEntityMapper>()
     private lateinit var characterListEntityMapper: CharacterListEntityMapper
+
     @Before
-    fun setup(){
+    fun setup() {
         characterListEntityMapper = CharacterListEntityMapper(characterEntityMapper)
     }
 

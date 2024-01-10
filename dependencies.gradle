@@ -92,7 +92,7 @@ ext {
     ]
 
     coilDependencies = [
-            coil     : "io.coil-kt:coil:$coilVersion",
+            coil       : "io.coil-kt:coil:$coilVersion",
             coilCompose: "io.coil-kt:coil-compose:$coilVersion"
     ]
 
@@ -128,11 +128,11 @@ ext {
     ]
 
     domainModuleDependencies = [
-            kotlin   : kotlinDependencies.kotlin,
-            javax    : javaDependencies.javax,
-            coroutine: coroutinesDependencies.coroutineCore,
-            daggerHilt    : [hiltDependencies.hiltAndroid],
-            moshiKotlin       : "com.squareup.moshi:moshi-kotlin:1.14.0"
+            kotlin     : kotlinDependencies.kotlin,
+            javax      : javaDependencies.javax,
+            coroutine  : coroutinesDependencies.coroutineCore,
+            daggerHilt : [hiltDependencies.hiltAndroid],
+            moshiKotlin: "com.squareup.moshi:moshi-kotlin:1.14.0"
 
     ]
 
@@ -164,7 +164,7 @@ ext {
                     composeDependencies.composeUiGraphics,
                     composeDependencies.navigationCompose],
             coil                 : [coilDependencies.coil,
-                    coilDependencies.coilCompose]
+                                    coilDependencies.coilCompose]
 
     ]
 }

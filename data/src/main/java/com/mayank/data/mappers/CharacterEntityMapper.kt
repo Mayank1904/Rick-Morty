@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class CharacterEntityMapper @Inject constructor(
     private val characterLocationEntityMapper: CharacterLocationEntityMapper
-)  {
-     fun mapFromEntity(entity: CharacterEntity): CharacterModel {
+) {
+    fun mapFromEntity(entity: CharacterEntity): CharacterModel {
         return with(entity) {
             CharacterModel(
                 created = created,
@@ -20,7 +20,7 @@ class CharacterEntityMapper @Inject constructor(
                 status = status,
                 type = type,
                 url = url,
-                )
+            )
         }
     }
 }

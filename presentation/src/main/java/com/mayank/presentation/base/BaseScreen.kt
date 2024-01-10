@@ -52,8 +52,11 @@ fun BaseScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview(){
-    BaseScreen(title = stringResource(id = R.string.characters), showBackButton = true, onBackClicked = { /*TODO*/ }) {
-        Text(text = "Hello")
+fun DefaultPreview() {
+    BaseScreen(
+        title = stringResource(id = R.string.characters),
+        showBackButton = true,
+        onBackClicked = { /*TODO*/ }) {
+        Text(text = stringResource(R.string.hello))
     }
 }
