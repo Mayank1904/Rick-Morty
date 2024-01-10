@@ -62,7 +62,7 @@ class CharacterListViewModelTest {
         }
 
     @Test
-    fun `fetch disney characters list failed GIVEN intent WHEN fetchDisneyCharacters called THEN verify usecase called to get success result`() =
+    fun `fetch character list failed GIVEN intent WHEN fetchCharacterList called THEN verify use-case called to get success result`() =
         runTest {
             coEvery { getCharactersUseCase() } answers {
                 flowOf(Result.failure(Exception()))
@@ -76,7 +76,7 @@ class CharacterListViewModelTest {
         }
 
     @Test
-    fun `navigate to details screen when DisneyListScreenIntent NavigateToDetails intent passed`() =
+    fun `navigate to details screen when CharacterListViewIntent OnCharacterClick intent passed`() =
         runTest {
             with(characterListViewModel) {
                 sideEffectSharedFlow.test {

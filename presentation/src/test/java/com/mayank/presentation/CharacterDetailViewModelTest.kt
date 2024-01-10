@@ -62,7 +62,7 @@ class CharacterDetailViewModelTest {
         }
 
     @Test
-    fun `fetch disney characters list failed GIVEN intent WHEN fetchDisneyCharacters called THEN verify usecase called to get success result`() =
+    fun `fetch character detail failed GIVEN intent WHEN loadData called THEN verify use-case called to get success result`() =
         runTest {
             coEvery { getCharacterByIdUseCase(ID) } answers {
                 flowOf(Result.failure(Exception()))

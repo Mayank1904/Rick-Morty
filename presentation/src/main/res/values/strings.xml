@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="characters">Characters</string>
-    <string name="character_image">Character Image</string>
     <string name="last_known_parents">"Last Know Location:"</string>
     <string name="content">content</string>
     <string name="gender">Gender:</string>
