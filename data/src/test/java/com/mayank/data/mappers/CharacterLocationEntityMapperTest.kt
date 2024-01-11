@@ -14,12 +14,13 @@ class CharacterLocationEntityMapperTest {
     }
 
     @Test
-    fun `GIVEN Character Location Entity WHEN mapFromEntity method called THEN converted Location Model return`() {
+    fun `GIVEN character location entity WHEN mapFromEntity is called THEN return character location model`() {
+        // Given
         val characterLocation =
             FakeCharactersList.getCharactersList().results[0].location
-
+        // When
         val locationMapper = characterLocationEntityMapper.mapFromEntity(characterLocation)
-
+        // Then
         Assert.assertEquals(locationMapper.name, LOCATION_NAME)
     }
 

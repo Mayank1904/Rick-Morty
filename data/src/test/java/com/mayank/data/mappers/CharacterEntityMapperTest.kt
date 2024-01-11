@@ -4,6 +4,7 @@ import com.mayank.data.fakes.FakeCharactersList
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -17,15 +18,19 @@ class CharacterEntityMapperTest {
     }
 
     @Test
-    fun `GIVEN character list entity when mapFromEntity method called then return converted characterList`() {
+    fun `GIVEN character entity WHEN mapFromEntity is called THEN return character model`() {
+        // Given
+        val characterEntity = FakeCharactersList.getCharacter()
+
         every {
-            characterLocationEntityMapper.mapFromEntity(FakeCharactersList.getCharactersList().results[0].location)
+            characterLocationEntityMapper.mapFromEntity(characterEntity.location)
         } returns FakeCharactersList.getCharacterModel().characterLocation
 
-        characterEntityMapper.mapFromEntity(FakeCharactersList.getCharacter())
+        // When
+        val result = characterEntityMapper.mapFromEntity(characterEntity)
 
-        verify {
-            characterLocationEntityMapper.mapFromEntity(any())
-        }
+        // Then
+        assertEquals(FakeCharactersList.getCharacterModel(), result)
+        verify { characterLocationEntityMapper.mapFromEntity(characterEntity.location) }
     }
 }

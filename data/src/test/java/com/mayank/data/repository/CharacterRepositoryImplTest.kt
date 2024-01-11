@@ -1,22 +1,21 @@
 package com.mayank.data.repository
 
-import app.cash.turbine.test
 import com.mayank.data.api.CharacterService
 import com.mayank.data.fakes.FakeCharactersList
 import com.mayank.data.mappers.CharacterEntityMapper
 import com.mayank.data.mappers.CharacterListEntityMapper
-import com.mayank.domain.models.CharacterListModel
-import com.mayank.domain.models.CharacterModel
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.junit4.MockKRule
 import io.mockk.mockk
+import io.mockk.verify
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
-import org.junit.After
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,71 +44,78 @@ class CharacterRepositoryImplTest {
     }
 
     @Test
-    fun `fetch characters WHEN characters api call THEN should return list`() = runTest {
-        val characterList = FakeCharactersList.getCharactersList()
-        val characterListModel = FakeCharactersList.getCharacterListModel()
-
-        coEvery {
-            characterService.getCharacters()
-        } returns characterList
-        every { characterListEntityMapper.mapFromEntity(characterList) } returns characterListModel
-
-        characterRepositoryImpl.getCharacters().test {
-            Assert.assertEquals(Result.success(characterListModel), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `GIVEN exception thrown WHEN character api call is made THEN should return exception`() =
+    fun `GIVEN character service returns characters WHEN getCharacters is called THEN return character list model`() =
         runTest {
+            // Given
+            val characters = FakeCharactersList.getCharactersList()
+            val characterListModel = FakeCharactersList.getCharacterListModel()
 
-            val exception = Exception()
-            coEvery { characterService.getCharacters() } coAnswers {
-                throw exception
-            }
-            characterRepositoryImpl.getCharacters().test {
-                Assert.assertEquals(Result.failure<CharacterListModel>(exception), awaitItem())
-                awaitComplete()
-            }
+            coEvery { characterService.getCharacters() } returns characters
+            every { characterListEntityMapper.mapFromEntity(characters) } returns characterListModel
 
+            // When
+            val result = characterRepositoryImpl.getCharacters().single()
+
+            // Then
+            assertTrue(result.isSuccess)
+            assertEquals(characterListModel, result.getOrNull())
+            coVerify { characterService.getCharacters() }
+            verify { characterListEntityMapper.mapFromEntity(characters) }
         }
 
     @Test
-    fun `GIVEN id fetch character WHEN characters api call THEN should return list`() = runTest {
-        val characterItem = FakeCharactersList.getCharacter()
-        val characterModel = FakeCharactersList.getCharacterModel()
-
-        coEvery {
-            characterService.getCharacter(ID)
-        } returns characterItem
-        every { characterEntityMapper.mapFromEntity(characterItem) } returns characterModel
-
-        characterRepositoryImpl.getCharacter(ID).test {
-            Assert.assertEquals(Result.success(characterModel), awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `GIVEN exception thrown WHEN character details api call is made THEN should return exception`() =
+    fun `GIVEN character service throws exception WHEN getCharacters is called THEN return failure result`() =
         runTest {
-            val exception = Exception()
+            // Given
+            val exception = Exception("Error")
 
-            coEvery { characterService.getCharacter(ID) } coAnswers {
-                throw exception
-            }
-            characterRepositoryImpl.getCharacter(ID).test {
-                Assert.assertEquals(Result.failure<CharacterModel>(exception), awaitItem())
-                awaitComplete()
-            }
+            coEvery { characterService.getCharacters() } throws exception
 
+            // When
+            val result = characterRepositoryImpl.getCharacters().single()
+
+            // Then
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            coVerify { characterService.getCharacters() }
         }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
+    @Test
+    fun `GIVEN character service returns character WHEN getCharacter is called THEN return character model`() =
+        runTest {
+            // Given
+            val character = FakeCharactersList.getCharacter()
+            val characterModel = FakeCharactersList.getCharacterModel()
+
+            coEvery { characterService.getCharacter(ID) } returns character
+            every { characterEntityMapper.mapFromEntity(character) } returns characterModel
+
+            // When
+            val result = characterRepositoryImpl.getCharacter(ID).single()
+
+            // Then
+            assertTrue(result.isSuccess)
+            assertEquals(characterModel, result.getOrNull())
+            coVerify { characterService.getCharacter(ID) }
+            verify { characterEntityMapper.mapFromEntity(character) }
+        }
+
+    @Test
+    fun `GIVEN character service throws exception WHEN getCharacter is called THEN return failure result`() =
+        runTest {
+            // Given
+            val exception = RuntimeException("Error")
+
+            coEvery { characterService.getCharacter(ID) } throws exception
+
+            // When
+            val result = characterRepositoryImpl.getCharacter(ID).single()
+
+            // Then
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            coVerify { characterService.getCharacter(ID) }
+        }
 
     private companion object {
         const val ID = 23

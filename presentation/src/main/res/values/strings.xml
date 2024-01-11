@@ -9,5 +9,6 @@
     <string name="status">Status:</string>
     <string name="character_detail">Character Detail</string>
     <string name="hello">Hello</string>
+    <string name="arrowback">ArrowBack</string>
 
 </resources>

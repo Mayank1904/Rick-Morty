@@ -2,18 +2,19 @@ package com.mayank.domain.usecases
 
 import com.mayank.domain.fakes.FakeData
 import com.mayank.domain.repository.CharacterRepository
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.junit4.MockKRule
 import io.mockk.mockk
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GetCharactersUseCaseTest {
@@ -30,29 +31,41 @@ class GetCharactersUseCaseTest {
     }
 
     @Test
-    fun `GIVEN no data WHEN use-case invoke called THEN character list return`() = runTest {
-        val characters = FakeData.getCharacters()
-        coEvery { characterRepository.getCharacters() } returns flowOf(Result.success(characters))
+    fun `GIVEN repository returns character list model WHEN invoke is called THEN return character list model`() =
+        runTest {
+            // Given
+            val characterListModel = FakeData.getCharacters()
 
-        getCharactersUseCase()
+            coEvery { characterRepository.getCharacters() } returns flowOf(
+                Result.success(
+                    characterListModel
+                )
+            )
 
-        verify(times(1)) {
-            characterRepository.getCharacters()
-        }
-    }
+            // When
+            val result = getCharactersUseCase().single()
 
-    @Test(expected = IOException::class)
-    fun `GIVEN no data WHEN use-case invoke called THEN exception thrown`() = runTest {
-        coEvery { characterRepository.getCharacters() } answers {
-            throw IOException()
-        }
-
-        getCharactersUseCase()
-
-        verify(times(1)) {
-            characterRepository.getCharacters()
+            // Then
+            assertTrue(result.isSuccess)
+            assertEquals(characterListModel, result.getOrNull())
+            coVerify { characterRepository.getCharacters() }
         }
 
-    }
+    @Test
+    fun `GIVEN repository throws exception WHEN invoke is called THEN return failure result`() =
+        runTest {
+            // Given
+            val exception = Exception("Error")
+
+            coEvery { characterRepository.getCharacters() } returns flowOf(Result.failure(exception))
+
+            // When
+            val result = getCharactersUseCase().single()
+
+            // Then
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            coVerify { characterRepository.getCharacters() }
+        }
 
 }

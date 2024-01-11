@@ -35,18 +35,16 @@ object DataModule {
                     readTimeout(OK_HTTP_TIMEOUT, TimeUnit.SECONDS)
                 }.build()
             )
-            .addConverterFactory(MoshiConverterFactory.create(moshi).withNullSerialization())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(CharacterService::class.java)
     }
 
 
     @Provides
-    @Singleton
     fun provideBaseUrl(): String = BuildConfig.BASE_URL
 
     @Provides
-    @Singleton
     fun provideMoshi(): Moshi = Moshi
         .Builder()
         .add(KotlinJsonAdapterFactory())

@@ -32,7 +32,10 @@ fun BaseScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         if (showBackButton) {
                             IconButton(onClick = { onBackClicked.invoke() }) {
-                                Icon(Icons.Default.ArrowBack, contentDescription = null)
+                                Icon(
+                                    Icons.Default.ArrowBack,
+                                    contentDescription = stringResource(R.string.arrowback)
+                                )
                             }
                         }
                         Text(
@@ -56,7 +59,7 @@ fun DefaultPreview() {
     BaseScreen(
         title = stringResource(id = R.string.characters),
         showBackButton = true,
-        onBackClicked = { /*TODO*/ }) {
+        onBackClicked = { }) {
         Text(text = stringResource(R.string.hello))
     }
 }

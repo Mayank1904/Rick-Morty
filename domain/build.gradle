@@ -16,7 +16,5 @@ dependencies {
     implementation domainModuleDependencies.moshiKotlin
     testImplementation testDependencies.coroutinesTest
     testImplementation testDependencies.jUnit
-    testImplementation testDependencies.mockitoKotlin
-    testImplementation "io.mockk:mockk:1.13.7"
-    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation testDependencies.mockk
 }
