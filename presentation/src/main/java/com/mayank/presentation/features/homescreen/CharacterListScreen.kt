@@ -6,6 +6,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mayank.presentation.components.CharacterCard
@@ -16,12 +20,16 @@ import com.mayank.presentation.models.CharacterItem
 fun CharacterListScreen(callback: (id: Int) -> Unit) {
     val viewModel: CharacterListViewModel = hiltViewModel()
 
-    LaunchedEffect(Unit) {
-        viewModel.sendIntent(CharacterListViewIntent.LoadData)
+    var apiCalled by rememberSaveable { mutableStateOf(false) }
+    if (!apiCalled) {
+        LaunchedEffect(Unit) {
+            viewModel.sendIntent(CharacterListViewIntent.LoadData)
+        }
+        apiCalled = true
     }
 
     val viewState =
-        viewModel.stateFlow.collectAsState(initial = CharacterListViewState.Loading)
+        viewModel.stateFlow.collectAsState(0)
 
     when (viewState.value) {
         is CharacterListViewState.Loading -> {
@@ -32,12 +40,21 @@ fun CharacterListScreen(callback: (id: Int) -> Unit) {
             CharacterList(
                 characterList = (viewState.value as CharacterListViewState.Success).data.characters,
                 onItemClicked = {
-                    callback.invoke(it.id)
+                    viewModel.sendIntent(CharacterListViewIntent.OnCharacterClick(it.id))
                 }
             )
         }
 
         is CharacterListViewState.Error -> {}
+    }
+
+    val sideEffect = viewModel.sideEffectSharedFlow.collectAsState(initial = 0)
+    when (sideEffect.value) {
+        is CharacterListSideEffect.NavigateToDetails -> {
+            LaunchedEffect(Unit) {
+                callback((sideEffect.value as CharacterListSideEffect.NavigateToDetails).id)
+            }
+        }
     }
 }
 

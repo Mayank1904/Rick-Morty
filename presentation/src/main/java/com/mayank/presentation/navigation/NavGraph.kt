@@ -23,9 +23,8 @@ fun NavGraph(navController: NavHostController) {
             BaseScreen(
                 title = stringResource(id = R.string.characters),
                 showBackButton = false,
-                onBackClicked = {
-
-                }) {
+                onBackClicked = {}
+            ) {
                 CharacterListScreen {
                     navController.navigate(NavigationScreens.CharacterDetailScreen.route + "/${it}")
                 }

@@ -19,6 +19,6 @@ sealed interface CharacterListViewIntent : ViewIntent {
     class OnCharacterClick(val id: Int) : CharacterListViewIntent
 }
 
-sealed interface CharacterListSideEffect : SideEffect {
+interface CharacterListSideEffect : SideEffect {
     class NavigateToDetails(val id: Int) : CharacterListSideEffect
 }

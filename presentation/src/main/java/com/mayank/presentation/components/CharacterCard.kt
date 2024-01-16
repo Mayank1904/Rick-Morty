@@ -28,7 +28,7 @@ fun CharacterCard(characterItem: CharacterItem, onItemClicked: (CharacterItem) -
             .wrapContentHeight(align = Alignment.Top),
         elevation = 8.dp,
         onClick = {
-            onItemClicked.invoke(characterItem)
+            onItemClicked(characterItem)
         }
 
     ) {
