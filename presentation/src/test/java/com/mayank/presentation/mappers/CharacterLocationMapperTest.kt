@@ -15,11 +15,11 @@ class CharacterLocationMapperTest {
     }
 
     @Test
-    fun `GIVEN Character Location Entity WHEN mapFromEntity method called THEN converted Location Model return`() {
+    fun `GIVEN Character Location Entity WHEN map method called THEN converted Location Model return`() {
         val characterLocation =
             FakeData.getCharacterModel().characterLocation
 
-        val locationMapper = characterLocationMapper.mapFromModel(characterLocation)
+        val locationMapper = characterLocationMapper.map(characterLocation)
 
         Assert.assertEquals(locationMapper.name, LOCATION_NAME)
     }

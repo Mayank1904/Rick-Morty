@@ -17,15 +17,15 @@ class CharacterListMapperTest {
     }
 
     @Test
-    fun `GIVEN character model when mapFromModel method called then return converted characterItem`() {
+    fun `GIVEN character model when map method called then return converted characterItem`() {
         every {
-            characterMapper.mapFromModel(FakeData.getCharacterModel())
+            characterMapper.map(FakeData.getCharacterModel())
         } returns FakeData.getCharactersList().characters[0]
 
-        characterListMapper.mapFromModel(FakeData.getCharacterListModel())
+        characterListMapper.map(FakeData.getCharacterListModel())
 
         verify {
-            characterMapper.mapFromModel(any())
+            characterMapper.map(any())
         }
     }
 }

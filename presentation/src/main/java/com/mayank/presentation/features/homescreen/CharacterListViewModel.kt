@@ -24,7 +24,7 @@ class CharacterListViewModel @Inject constructor(
                     result.isSuccess -> {
                         state.emit(
                             CharacterListViewState.Success(
-                                characterListMapper.mapFromModel(
+                                characterListMapper.map(
                                     result.getOrDefault(
                                         CharacterListModel(listOf())
                                     )
@@ -35,7 +35,6 @@ class CharacterListViewModel @Inject constructor(
 
                     result.isFailure -> {
                         state.emit(CharacterListViewState.Error(result.exceptionOrNull()!!))
-
                     }
                 }
             }

@@ -10,11 +10,11 @@ sealed interface CharacterDetailViewState : ViewState {
 
     data class Success(val data: CharacterItem) : CharacterDetailViewState
 
-    data class Error(val throwable: Throwable) : CharacterDetailViewState
+    data class Error(private val throwable: Throwable) : CharacterDetailViewState
 }
 
 interface CharacterDetailViewIntent : ViewIntent {
-    data class LoadData(val id: Int) : CharacterDetailViewIntent
+    class LoadData(val id: Int) : CharacterDetailViewIntent
 }
 
 interface CharacterDetailSideEffect : SideEffect

@@ -1,6 +1,5 @@
 package com.mayank.presentation
 
-import app.cash.turbine.test
 import com.mayank.domain.usecases.GetCharacterByIdUseCase
 import com.mayank.presentation.fakes.FakeData
 import com.mayank.presentation.features.detailscreen.CharacterDetailViewIntent
@@ -51,7 +50,7 @@ class CharacterDetailViewModelTest {
             coEvery { getCharacterByIdUseCase(ID) } returns flowOf(Result.success(FakeData.getCharacter()))
 
             coEvery {
-                characterMapper.mapFromModel(FakeData.getCharacters().characters[0])
+                characterMapper.map(FakeData.getCharacters().characters[0])
             } returns data
 
             characterDetailViewModel.sendIntent(CharacterDetailViewIntent.LoadData(ID))
@@ -64,15 +63,17 @@ class CharacterDetailViewModelTest {
     @Test
     fun `fetch character detail failed GIVEN intent WHEN loadData called THEN verify use-case called to get success result`() =
         runTest {
+            val e = Exception()
             coEvery { getCharacterByIdUseCase(ID) } answers {
-                flowOf(Result.failure(Exception()))
+                flowOf(Result.failure(e))
             }
 
             characterDetailViewModel.sendIntent(CharacterDetailViewIntent.LoadData(ID))
 
-            characterDetailViewModel.stateFlow.test {
-                Assert.assertTrue(awaitItem() is CharacterDetailViewState.Error)
-            }
+            Assert.assertEquals(
+                CharacterDetailViewState.Error(e),
+                characterDetailViewModel.stateFlow.value
+            )
         }
 
     private companion object {

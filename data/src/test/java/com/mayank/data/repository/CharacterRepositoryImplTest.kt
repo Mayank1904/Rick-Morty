@@ -51,7 +51,7 @@ class CharacterRepositoryImplTest {
             val characterListModel = FakeCharactersList.getCharacterListModel()
 
             coEvery { characterService.getCharacters() } returns characters
-            every { characterListEntityMapper.mapFromEntity(characters) } returns characterListModel
+            every { characterListEntityMapper.map(characters) } returns characterListModel
 
             // When
             val result = characterRepositoryImpl.getCharacters().single()
@@ -60,7 +60,7 @@ class CharacterRepositoryImplTest {
             assertTrue(result.isSuccess)
             assertEquals(characterListModel, result.getOrNull())
             coVerify { characterService.getCharacters() }
-            verify { characterListEntityMapper.mapFromEntity(characters) }
+            verify { characterListEntityMapper.map(characters) }
         }
 
     @Test
@@ -88,7 +88,7 @@ class CharacterRepositoryImplTest {
             val characterModel = FakeCharactersList.getCharacterModel()
 
             coEvery { characterService.getCharacter(ID) } returns character
-            every { characterEntityMapper.mapFromEntity(character) } returns characterModel
+            every { characterEntityMapper.map(character) } returns characterModel
 
             // When
             val result = characterRepositoryImpl.getCharacter(ID).single()
@@ -97,7 +97,7 @@ class CharacterRepositoryImplTest {
             assertTrue(result.isSuccess)
             assertEquals(characterModel, result.getOrNull())
             coVerify { characterService.getCharacter(ID) }
-            verify { characterEntityMapper.mapFromEntity(character) }
+            verify { characterEntityMapper.map(character) }
         }
 
     @Test

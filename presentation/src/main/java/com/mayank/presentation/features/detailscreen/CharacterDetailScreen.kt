@@ -1,5 +1,7 @@
 package com.mayank.presentation.features.detailscreen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,7 +15,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -25,7 +26,7 @@ import com.mayank.presentation.components.ProgressBar
 import com.mayank.presentation.models.CharacterItem
 
 @Composable
-fun CharacterDetailScreen(id: Int) {
+fun CharacterDetailScreen(id: Int, context: Context) {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
         viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
@@ -33,15 +34,16 @@ fun CharacterDetailScreen(id: Int) {
     val viewState = viewModel.stateFlow.collectAsState(initial = CharacterDetailViewState.Loading)
 
     when (viewState.value) {
-        is CharacterDetailViewState.Loading -> {
+        is CharacterDetailViewState.Loading ->
             ProgressBar(modifier = Modifier.fillMaxSize())
-        }
 
-        is CharacterDetailViewState.Success -> {
+        is CharacterDetailViewState.Success ->
             DetailScreen((viewState.value as CharacterDetailViewState.Success).data)
-        }
 
-        is CharacterDetailViewState.Error -> {}
+        is CharacterDetailViewState.Error -> Toast.makeText(
+            context,
+            stringResource(R.string.no_network_connectivity), Toast.LENGTH_LONG
+        ).show()
     }
 
 }
@@ -144,10 +146,4 @@ fun DetailScreen(data: CharacterItem) {
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CharacterDetailScreen(1)
 }

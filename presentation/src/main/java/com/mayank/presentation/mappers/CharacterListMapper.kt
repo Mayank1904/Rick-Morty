@@ -7,9 +7,9 @@ import javax.inject.Inject
 class CharacterListMapper @Inject constructor(
     private val characterMapper: CharacterMapper
 ) {
-    fun mapFromModel(model: CharacterListModel): CharacterList {
+    fun map(model: CharacterListModel): CharacterList {
         return with(model) {
-            CharacterList(characters = characters.map { characterMapper.mapFromModel(it) }
+            CharacterList(characters = characters.map { characterMapper.map(it) }
             )
         }
     }

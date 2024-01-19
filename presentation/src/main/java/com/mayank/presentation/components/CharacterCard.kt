@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.mayank.presentation.R
 import com.mayank.presentation.models.CharacterItem
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CharacterCard(characterItem: CharacterItem, onItemClicked: (CharacterItem) -> Unit) {
     Card(

@@ -21,8 +21,9 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override suspend fun getCharacters(): Flow<Result<CharacterListModel>> = flow {
         try {
-            val characters = characterService.getCharacters()
-            emit(Result.success(characterListEntityMapper.mapFromEntity(characters)))
+            characterService.getCharacters().run {
+                emit(Result.success(characterListEntityMapper.map(this)))
+            }
         } catch (e: Exception) {
             emit(Result.failure(e))
         }
@@ -30,8 +31,9 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override suspend fun getCharacter(characterId: Int): Flow<Result<CharacterModel>> = flow {
         try {
-            val character = characterService.getCharacter(characterId)
-            emit(Result.success(characterEntityMapper.mapFromEntity(character)))
+            characterService.getCharacter(characterId).run {
+                emit(Result.success(characterEntityMapper.map(this)))
+            }
         } catch (e: Exception) {
             emit(Result.failure(e))
         }

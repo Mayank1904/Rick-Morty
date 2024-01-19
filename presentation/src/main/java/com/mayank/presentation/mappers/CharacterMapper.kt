@@ -7,13 +7,13 @@ import javax.inject.Inject
 class CharacterMapper @Inject constructor(
     private val characterLocationMapper: CharacterLocationMapper
 ) {
-    fun mapFromModel(model: CharacterModel): CharacterItem {
+    fun map(model: CharacterModel): CharacterItem {
         return with(model) {
             CharacterItem(
                 gender = gender,
                 id = id,
                 image = image,
-                characterLocation = characterLocationMapper.mapFromModel(characterLocation),
+                characterLocation = characterLocationMapper.map(characterLocation),
                 name = name,
                 species = species,
                 status = status,

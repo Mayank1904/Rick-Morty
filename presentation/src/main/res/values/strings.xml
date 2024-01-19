@@ -10,5 +10,6 @@
     <string name="character_detail">Character Detail</string>
     <string name="hello">Hello</string>
     <string name="arrowback">ArrowBack</string>
+    <string name="no_network_connectivity">No Network connectivity</string>
 
 </resources>

@@ -13,7 +13,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,9 +20,11 @@ object DataModule {
     private const val OK_HTTP_TIMEOUT = 60L
 
     @Provides
-    @Singleton
-    fun provideCharacterService(baseUrl: String, moshi: Moshi): CharacterService {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
+    fun provideCharacterService(
+        baseUrl: String,
+        moshi: Moshi,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): CharacterService {
         return Retrofit.Builder().baseUrl(baseUrl)
             .client(
                 OkHttpClient.Builder().apply {
@@ -49,4 +50,7 @@ object DataModule {
         .Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
+
+    @Provides
+    fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor()
 }

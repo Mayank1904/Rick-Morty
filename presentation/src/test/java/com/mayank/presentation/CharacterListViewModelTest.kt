@@ -45,35 +45,31 @@ class CharacterListViewModelTest {
     }
 
     @Test
-    fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() =
-        runTest {
-            val data = FakeData.getCharactersList()
-            coEvery { getCharactersUseCase() } returns flowOf(Result.success(FakeData.getCharacters()))
+    fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() {
+        val data = FakeData.getCharactersList()
+        coEvery { getCharactersUseCase() } returns flowOf(Result.success(FakeData.getCharacters()))
 
-            coEvery {
-                characterListMapper.mapFromModel(FakeData.getCharacters())
-            } returns data
+        coEvery {
+            characterListMapper.map(FakeData.getCharacters())
+        } returns data
 
-            characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
-            Assert.assertEquals(
-                CharacterListViewState.Success(data),
-                characterListViewModel.stateFlow.value
-            )
-        }
+        characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
+        Assert.assertEquals(
+            CharacterListViewState.Success(data),
+            characterListViewModel.stateFlow.value
+        )
+    }
 
     @Test
-    fun `fetch character list failed GIVEN intent WHEN fetchCharacterList called THEN verify use-case called to get success result`() =
-        runTest {
-            coEvery { getCharactersUseCase() } answers {
-                flowOf(Result.failure(Exception()))
-            }
-
-            characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
-
-            characterListViewModel.stateFlow.test {
-                Assert.assertTrue(awaitItem() is CharacterListViewState.Error)
-            }
+    fun `fetch character list failed GIVEN intent WHEN fetchCharacterList called THEN verify use-case called to get success result`() {
+        val e = Exception()
+        coEvery { getCharactersUseCase() } answers {
+            flowOf(Result.failure(e))
         }
+
+        characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
+        Assert.assertEquals(CharacterListViewState.Error(e), characterListViewModel.stateFlow.value)
+    }
 
     @Test
     fun `navigate to details screen when CharacterListViewIntent OnCharacterClick intent passed`() =

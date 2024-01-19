@@ -7,10 +7,10 @@ import javax.inject.Inject
 class CharacterListEntityMapper @Inject constructor(
     private val characterEntityMapper: CharacterEntityMapper,
 ) {
-    fun mapFromEntity(entity: CharacterListEntity): CharacterListModel {
+    fun map(entity: CharacterListEntity): CharacterListModel {
         return with(entity) {
             CharacterListModel(characters = results.map {
-                characterEntityMapper.mapFromEntity(it)
+                characterEntityMapper.map(it)
             }
             )
         }

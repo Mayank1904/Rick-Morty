@@ -18,19 +18,19 @@ class CharacterEntityMapperTest {
     }
 
     @Test
-    fun `GIVEN character entity WHEN mapFromEntity is called THEN return character model`() {
+    fun `GIVEN character entity WHEN map is called THEN return character model`() {
         // Given
         val characterEntity = FakeCharactersList.getCharacter()
 
         every {
-            characterLocationEntityMapper.mapFromEntity(characterEntity.location)
+            characterLocationEntityMapper.map(characterEntity.location)
         } returns FakeCharactersList.getCharacterModel().characterLocation
 
         // When
-        val result = characterEntityMapper.mapFromEntity(characterEntity)
+        val result = characterEntityMapper.map(characterEntity)
 
         // Then
         assertEquals(FakeCharactersList.getCharacterModel(), result)
-        verify { characterLocationEntityMapper.mapFromEntity(characterEntity.location) }
+        verify { characterLocationEntityMapper.map(characterEntity.location) }
     }
 }

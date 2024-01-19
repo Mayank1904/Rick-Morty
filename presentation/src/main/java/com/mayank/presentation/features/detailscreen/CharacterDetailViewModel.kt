@@ -16,13 +16,13 @@ class CharacterDetailViewModel @Inject constructor(
 ) :
     BaseViewModel<CharacterDetailViewState, CharacterDetailViewIntent, CharacterDetailSideEffect>() {
 
-    private fun fetchCharacterList(id: Int) {
+    private fun fetchCharacterList(id: Int) =
         viewModelScope.launch {
             characterByIdUseCase(id).collectLatest { result ->
                 when {
                     result.isSuccess -> state.emit(
                         CharacterDetailViewState.Success(
-                            characterMapper.mapFromModel(
+                            characterMapper.map(
                                 result.getOrNull()!!
                             )
                         )
@@ -32,7 +32,6 @@ class CharacterDetailViewModel @Inject constructor(
                 }
             }
         }
-    }
 
     override fun sendIntent(intent: CharacterDetailViewIntent) {
         when (intent) {

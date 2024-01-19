@@ -7,14 +7,14 @@ import javax.inject.Inject
 class CharacterEntityMapper @Inject constructor(
     private val characterLocationEntityMapper: CharacterLocationEntityMapper
 ) {
-    fun mapFromEntity(entity: CharacterEntity): CharacterModel {
+    fun map(entity: CharacterEntity): CharacterModel {
         return with(entity) {
             CharacterModel(
                 created = created,
                 gender = gender,
                 id = id,
                 image = image,
-                characterLocation = characterLocationEntityMapper.mapFromEntity(location),
+                characterLocation = characterLocationEntityMapper.map(location),
                 name = name,
                 species = species,
                 status = status,

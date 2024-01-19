@@ -5,7 +5,7 @@ import com.mayank.presentation.models.CharacterLocation
 import javax.inject.Inject
 
 class CharacterLocationMapper @Inject constructor() {
-    fun mapFromModel(model: CharacterLocationModel): CharacterLocation {
+    fun map(model: CharacterLocationModel): CharacterLocation {
         return with(model) {
             CharacterLocation(name = name)
         }

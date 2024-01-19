@@ -1,5 +1,6 @@
 package com.mayank.presentation.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -14,7 +15,7 @@ import com.mayank.presentation.features.detailscreen.CharacterDetailScreen
 import com.mayank.presentation.features.homescreen.CharacterListScreen
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, context: Context) {
     NavHost(
         navController = navController,
         startDestination = NavigationScreens.CharacterListScreen.route
@@ -25,7 +26,7 @@ fun NavGraph(navController: NavHostController) {
                 showBackButton = false,
                 onBackClicked = {}
             ) {
-                CharacterListScreen {
+                CharacterListScreen(context) {
                     navController.navigate(NavigationScreens.CharacterDetailScreen.route + "/${it}")
                 }
             }
@@ -34,8 +35,7 @@ fun NavGraph(navController: NavHostController) {
             "${NavigationScreens.CharacterDetailScreen.route}/{${characterId}}",
             arguments = listOf(navArgument(characterId) { type = NavType.IntType })
         ) { navBackStackEntry ->
-            val characterId = navBackStackEntry.arguments?.getInt(characterId)
-            characterId?.let {
+            navBackStackEntry.arguments?.getInt(characterId)?.let {
                 BaseScreen(
                     title = stringResource(R.string.character_detail),
                     showBackButton = true,
@@ -43,7 +43,8 @@ fun NavGraph(navController: NavHostController) {
                         navController.popBackStack()
                     }) {
                     CharacterDetailScreen(
-                        id = characterId
+                        id = it,
+                        context
                     )
                 }
             }
