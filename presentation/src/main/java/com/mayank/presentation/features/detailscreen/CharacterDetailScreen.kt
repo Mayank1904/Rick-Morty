@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -13,6 +15,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,8 +34,12 @@ import com.mayank.presentation.models.CharacterItem
 @Composable
 fun CharacterDetailScreen(id: Int, context: Context) {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
-    LaunchedEffect(Unit) {
-        viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
+    var apiCalled by rememberSaveable { mutableStateOf(false) }
+    if(!apiCalled) {
+        LaunchedEffect(Unit) {
+            viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
+        }
+        apiCalled = true
     }
     val viewState = viewModel.stateFlow.collectAsState(initial = CharacterDetailViewState.Loading)
 
@@ -50,9 +60,10 @@ fun CharacterDetailScreen(id: Int, context: Context) {
 
 @Composable
 fun DetailScreen(data: CharacterItem) {
+    val scrollState = rememberScrollState()
     Surface {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(bottom = 16.dp)
         ) {
             val (characterImage, cardContainer) = createRefs()
             CharacterImage(
