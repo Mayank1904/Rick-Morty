@@ -1,12 +1,11 @@
 package com.mayank.presentation.features.homescreen
 
 import androidx.lifecycle.viewModelScope
-import com.mayank.domain.models.CharacterListModel
+import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharactersUseCase
 import com.mayank.presentation.base.BaseViewModel
 import com.mayank.presentation.mappers.CharacterListMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,23 +18,19 @@ class CharacterListViewModel @Inject constructor(
 
     private fun fetchCharacterList() {
         viewModelScope.launch {
-            getCharactersUseCase().collectLatest { result ->
-                when {
-                    result.isSuccess -> {
-                        state.emit(
-                            CharacterListViewState.Success(
-                                characterListMapper.map(
-                                    result.getOrDefault(
-                                        CharacterListModel(listOf())
-                                    )
-                                )
+            when (val result = getCharactersUseCase()) {
+                is Result.Success -> {
+                    state.emit(
+                        CharacterListViewState.Success(
+                            characterListMapper.map(
+                                result.data
                             )
                         )
-                    }
+                    )
+                }
 
-                    result.isFailure -> {
-                        state.emit(CharacterListViewState.Error(result.exceptionOrNull()!!))
-                    }
+                is Result.Error -> {
+                    state.emit(CharacterListViewState.Error(result.exception))
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.mayank.presentation
 
 import app.cash.turbine.test
+import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharactersUseCase
 import com.mayank.presentation.fakes.FakeData
 import com.mayank.presentation.features.homescreen.CharacterListSideEffect
@@ -13,7 +14,6 @@ import io.mockk.junit4.MockKRule
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -47,7 +47,7 @@ class CharacterListViewModelTest {
     @Test
     fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() {
         val data = FakeData.getCharactersList()
-        coEvery { getCharactersUseCase() } returns flowOf(Result.success(FakeData.getCharacters()))
+        coEvery { getCharactersUseCase() } returns Result.Success(FakeData.getCharacters())
 
         coEvery {
             characterListMapper.map(FakeData.getCharacters())
@@ -64,7 +64,7 @@ class CharacterListViewModelTest {
     fun `fetch character list failed GIVEN intent WHEN fetchCharacterList called THEN verify use-case called to get success result`() {
         val e = Exception()
         coEvery { getCharactersUseCase() } answers {
-            flowOf(Result.failure(e))
+           Result.Error(e)
         }
 
         characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)

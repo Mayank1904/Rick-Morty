@@ -35,7 +35,7 @@ import com.mayank.presentation.models.CharacterItem
 fun CharacterDetailScreen(id: Int, context: Context) {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
     var apiCalled by rememberSaveable { mutableStateOf(false) }
-    if(!apiCalled) {
+    if (!apiCalled) {
         LaunchedEffect(Unit) {
             viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
         }
@@ -60,10 +60,12 @@ fun CharacterDetailScreen(id: Int, context: Context) {
 
 @Composable
 fun DetailScreen(data: CharacterItem) {
-    val scrollState = rememberScrollState()
     Surface {
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize().verticalScroll(scrollState).padding(bottom = 16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 16.dp)
         ) {
             val (characterImage, cardContainer) = createRefs()
             CharacterImage(

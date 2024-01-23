@@ -1,5 +1,6 @@
 package com.mayank.presentation
 
+import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharacterByIdUseCase
 import com.mayank.presentation.fakes.FakeData
 import com.mayank.presentation.features.detailscreen.CharacterDetailViewIntent
@@ -11,7 +12,6 @@ import io.mockk.junit4.MockKRule
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -47,7 +47,7 @@ class CharacterDetailViewModelTest {
     fun `fetch character detail successfully GIVEN intent WHEN loadData called THEN verify`() =
         runTest {
             val data = FakeData.getCharactersList().characters[0]
-            coEvery { getCharacterByIdUseCase(ID) } returns flowOf(Result.success(FakeData.getCharacter()))
+            coEvery { getCharacterByIdUseCase(ID) } returns Result.Success(FakeData.getCharacter())
 
             coEvery {
                 characterMapper.map(FakeData.getCharacters().characters[0])
@@ -65,7 +65,7 @@ class CharacterDetailViewModelTest {
         runTest {
             val e = Exception()
             coEvery { getCharacterByIdUseCase(ID) } answers {
-                flowOf(Result.failure(e))
+                Result.Error(e)
             }
 
             characterDetailViewModel.sendIntent(CharacterDetailViewIntent.LoadData(ID))

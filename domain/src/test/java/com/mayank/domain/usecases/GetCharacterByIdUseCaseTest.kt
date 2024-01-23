@@ -1,16 +1,14 @@
 package com.mayank.domain.usecases
 
+import com.mayank.domain.Result
 import com.mayank.domain.fakes.FakeData
 import com.mayank.domain.repository.CharacterRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.junit4.MockKRule
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -34,40 +32,37 @@ class GetCharacterByIdUseCaseTest {
             // Given
             val characterModel = FakeData.getCharacter()
 
-            coEvery { characterRepository.getCharacter(ID) } returns flowOf(
-                Result.success(
-                    characterModel
-                )
+            coEvery { characterRepository.getCharacter(ID) } returns Result.Success(
+                characterModel
             )
 
             // When
-            val result = getCharacterByIdUseCase(ID).single()
+            val result = getCharacterByIdUseCase(ID)
 
             // Then
-            assertTrue(result.isSuccess)
-            assertEquals(characterModel, result.getOrNull())
-            coVerify { characterRepository.getCharacter(ID) }
+            assertTrue(result is Result.Success)
+            assertEquals(characterModel, (result as Result.Success).data)
         }
 
     @Test
     fun `GIVEN repository throws exception WHEN invoke is called THEN return failure result`() =
         runTest {
             // Given
-            val exception = Exception("Error")
+            val exception = Exception(ERROR)
 
-            coEvery { characterRepository.getCharacter(ID) } returns flowOf(Result.failure(exception))
+            coEvery { characterRepository.getCharacter(ID) } returns Result.Error(exception)
 
             // When
-            val result = getCharacterByIdUseCase(ID).single()
+            val result = getCharacterByIdUseCase(ID)
 
             // Then
-            assertTrue(result.isFailure)
-            assertEquals(exception, result.exceptionOrNull())
-            coVerify { characterRepository.getCharacter(ID) }
+            assertTrue(result is Result.Error)
+            assertEquals(exception, (result as Result.Error).exception)
         }
 
     private companion object {
         const val ID = 36
+        const val ERROR = "Error"
     }
 
 }
