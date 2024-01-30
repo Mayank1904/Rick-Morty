@@ -64,7 +64,7 @@ class CharacterListViewModelTest {
     fun `fetch character list failed GIVEN intent WHEN fetchCharacterList called THEN verify use-case called to get success result`() {
         val e = Exception()
         coEvery { getCharactersUseCase() } answers {
-           Result.Error(e)
+            Result.Error(e)
         }
 
         characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)

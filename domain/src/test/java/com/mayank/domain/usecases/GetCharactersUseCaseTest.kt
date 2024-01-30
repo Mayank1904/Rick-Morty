@@ -35,8 +35,8 @@ class GetCharactersUseCaseTest {
             val characterListModel = FakeData.getCharacters()
 
             coEvery { characterRepository.getCharacters() } returns Result.Success(
-                    characterListModel
-                )
+                characterListModel
+            )
 
             // When
             val result = getCharactersUseCase()

@@ -16,6 +16,10 @@ class CharacterListViewModel @Inject constructor(
 ) :
     BaseViewModel<CharacterListViewState, CharacterListViewIntent, CharacterListSideEffect>() {
 
+    init {
+        sendIntent(CharacterListViewIntent.LoadData)
+    }
+
     private fun fetchCharacterList() {
         viewModelScope.launch {
             when (val result = getCharactersUseCase()) {

@@ -13,12 +13,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,15 +27,9 @@ import com.mayank.presentation.components.ProgressBar
 import com.mayank.presentation.models.CharacterItem
 
 @Composable
-fun CharacterDetailScreen(id: Int, context: Context) {
+fun CharacterDetailScreen(context: Context) {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
-    var apiCalled by rememberSaveable { mutableStateOf(false) }
-    if (!apiCalled) {
-        LaunchedEffect(Unit) {
-            viewModel.sendIntent(CharacterDetailViewIntent.LoadData(id))
-        }
-        apiCalled = true
-    }
+
     val viewState = viewModel.stateFlow.collectAsState(initial = CharacterDetailViewState.Loading)
 
     when (viewState.value) {

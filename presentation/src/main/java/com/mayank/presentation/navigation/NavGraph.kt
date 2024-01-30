@@ -43,7 +43,6 @@ fun NavGraph(navController: NavHostController, context: Context) {
                         navController.popBackStack()
                     }) {
                     CharacterDetailScreen(
-                        id = it,
                         context
                     )
                 }

@@ -9,10 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,13 +20,6 @@ import com.mayank.presentation.models.CharacterItem
 @Composable
 fun CharacterListScreen(context: Context, callback: (id: Int) -> Unit) {
     val viewModel: CharacterListViewModel = hiltViewModel()
-    var apiCalled by rememberSaveable { mutableStateOf(false) }
-    if (!apiCalled) {
-        LaunchedEffect(Unit) {
-            viewModel.sendIntent(CharacterListViewIntent.LoadData)
-        }
-        apiCalled = true
-    }
 
     val viewState =
         viewModel.stateFlow.collectAsState(0)
