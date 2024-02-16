@@ -41,17 +41,18 @@ class CharacterListViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        characterListViewModel = CharacterListViewModel(getCharactersUseCase, characterListMapper)
-    }
-
-    @Test
-    fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() {
         val data = FakeData.getCharactersList()
         coEvery { getCharactersUseCase() } returns Result.Success(FakeData.getCharacters())
 
         coEvery {
             characterListMapper.map(FakeData.getCharacters())
         } returns data
+        characterListViewModel = CharacterListViewModel(getCharactersUseCase, characterListMapper)
+    }
+
+    @Test
+    fun `fetch character list successfully GIVEN intent WHEN fetchCharacterList called THEN verify`() {
+        val data = FakeData.getCharactersList()
 
         characterListViewModel.sendIntent(CharacterListViewIntent.LoadData)
         Assert.assertEquals(
