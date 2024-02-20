@@ -1,6 +1,7 @@
 package com.mayank.presentation.base
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -15,7 +16,7 @@ abstract class BaseViewModel<VS : ViewState, VI : ViewIntent, SE : SideEffect> :
     val stateFlow: StateFlow<VS>
         get() = state
 
-    protected val sideEffect = MutableSharedFlow<SE>()
+    protected val sideEffect = MutableSharedFlow<SE>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     val sideEffectSharedFlow: SharedFlow<SE> get() = sideEffect
     abstract fun sendIntent(intent: VI)
