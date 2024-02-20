@@ -10,24 +10,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MVIDelegate<UiState, UiAction, SideEffect> internal constructor(
-    initialUiState: UiState,
-) : MVI<UiState, UiAction, SideEffect> {
+class MVIDelegate<ViewState, ViewIntent, SideEffect> internal constructor(
+    initialUiState: ViewState,
+) : MVI<ViewState, ViewIntent, SideEffect> {
 
-    private val _uiState = MutableStateFlow(initialUiState)
-    override val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val _viewState = MutableStateFlow(initialUiState)
+    override val viewState: StateFlow<ViewState> = _viewState.asStateFlow()
 
     private val _sideEffect by lazy { MutableSharedFlow<SideEffect>() }
     override val sideEffect: SharedFlow<SideEffect> by lazy { _sideEffect.asSharedFlow() }
 
-    override fun onAction(uiAction: UiAction) {}
+    override fun sendIntent(intent: ViewIntent) {}
 
-    override fun updateUiState(newUiState: UiState) {
-        _uiState.update { newUiState }
+    override fun updateViewState(newViewState: ViewState) {
+        _viewState.update { newViewState }
     }
 
-    override fun updateUiState(block: UiState.() -> UiState) {
-        _uiState.update(block)
+    override fun updateViewState(block: ViewState.() -> ViewState) {
+        _viewState.update(block)
     }
 
     override fun CoroutineScope.emitSideEffect(effect: SideEffect) {
@@ -35,6 +35,6 @@ class MVIDelegate<UiState, UiAction, SideEffect> internal constructor(
     }
 }
 
-fun <UiState, UiAction, SideEffect> mvi(
-    initialUiState: UiState,
-): MVI<UiState, UiAction, SideEffect> = MVIDelegate(initialUiState)
+fun <ViewState, ViewIntent, SideEffect> mvi(
+    initialUiState: ViewState,
+): MVI<ViewState, ViewIntent, SideEffect> = MVIDelegate(initialUiState)

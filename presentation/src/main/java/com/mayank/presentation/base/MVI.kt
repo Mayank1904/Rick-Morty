@@ -4,15 +4,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface MVI<UiState, UiAction, SideEffect> {
-    val uiState: StateFlow<UiState>
+interface MVI<ViewState, ViewIntent, SideEffect> {
+    val viewState: StateFlow<ViewState>
     val sideEffect: SharedFlow<SideEffect>
 
-    fun onAction(uiAction: UiAction)
+    fun sendIntent(intent: ViewIntent)
 
-    fun updateUiState(block: UiState.() -> UiState)
+    fun updateViewState(block: ViewState.() -> ViewState)
 
-    fun updateUiState(newUiState: UiState)
+    fun updateViewState(newViewState: ViewState)
 
     fun CoroutineScope.emitSideEffect(effect: SideEffect)
 }

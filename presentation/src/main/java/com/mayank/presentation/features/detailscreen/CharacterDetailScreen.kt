@@ -30,7 +30,7 @@ import com.mayank.presentation.models.CharacterItem
 fun CharacterDetailScreen(context: Context) {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
 
-    val viewState = viewModel.stateFlow.collectAsState(initial = CharacterDetailViewState.Loading)
+    val viewState = viewModel.viewState.collectAsState(initial = CharacterDetailViewState.Loading)
 
     when (viewState.value) {
         is CharacterDetailViewState.Loading ->
