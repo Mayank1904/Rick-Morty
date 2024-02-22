@@ -13,7 +13,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -38,8 +37,7 @@ class CharacterRepositoryImplTest {
         characterRepositoryImpl = CharacterRepositoryImpl(
             characterService,
             characterListEntityMapper,
-            characterEntityMapper,
-            dispatcher = Dispatchers.IO
+            characterEntityMapper
         )
     }
 
@@ -49,7 +47,6 @@ class CharacterRepositoryImplTest {
             // Given
             val characters = FakeCharactersList.getCharactersList()
             val characterListModel = FakeCharactersList.getCharacterListModel()
-
             coEvery { characterService.getCharacters() } returns characters
             every { characterListEntityMapper.map(characters) } returns characterListModel
 
@@ -59,7 +56,6 @@ class CharacterRepositoryImplTest {
             // Then
             assertTrue(result is Result.Success)
             assertEquals(characterListModel, (result as Result.Success).data)
-
             coVerify { characterService.getCharacters() }
             verify { characterListEntityMapper.map(characters) }
         }
@@ -69,7 +65,6 @@ class CharacterRepositoryImplTest {
         runTest {
             // Given
             val exception = Exception(ERROR)
-
             coEvery { characterService.getCharacters() } throws exception
 
             // When
@@ -87,7 +82,6 @@ class CharacterRepositoryImplTest {
             // Given
             val character = FakeCharactersList.getCharacter()
             val characterModel = FakeCharactersList.getCharacterModel()
-
             coEvery { characterService.getCharacter(ID) } returns character
             every { characterEntityMapper.map(character) } returns characterModel
 
@@ -106,7 +100,6 @@ class CharacterRepositoryImplTest {
         runTest {
             // Given
             val exception = RuntimeException(ERROR)
-
             coEvery { characterService.getCharacter(ID) } throws exception
 
             // When

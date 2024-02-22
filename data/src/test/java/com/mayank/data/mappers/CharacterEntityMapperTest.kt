@@ -21,7 +21,6 @@ class CharacterEntityMapperTest {
     fun `GIVEN character entity WHEN map is called THEN return character model`() {
         // Given
         val characterEntity = FakeCharactersList.getCharacter()
-
         every {
             characterLocationEntityMapper.map(characterEntity.location)
         } returns FakeCharactersList.getCharacterModel().characterLocation

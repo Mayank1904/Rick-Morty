@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             rememberNavController().run {
                 RickMortyTheme {
-                    NavGraph(navController = this, context = this.context)
+                    NavGraph(navController = this)
                 }
             }
         }

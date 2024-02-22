@@ -1,6 +1,5 @@
 package com.mayank.presentation.navigation
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
@@ -15,7 +14,7 @@ import com.mayank.presentation.features.detailscreen.CharacterDetailScreen
 import com.mayank.presentation.features.homescreen.CharacterListScreen
 
 @Composable
-fun NavGraph(navController: NavHostController, context: Context) {
+fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         startDestination = NavigationScreens.CharacterListScreen.route
@@ -26,7 +25,7 @@ fun NavGraph(navController: NavHostController, context: Context) {
                 showBackButton = false,
                 onBackClicked = {}
             ) {
-                CharacterListScreen(context) {
+                CharacterListScreen {
                     navController.navigate(NavigationScreens.CharacterDetailScreen.route + "/${it}")
                 }
             }
@@ -42,9 +41,7 @@ fun NavGraph(navController: NavHostController, context: Context) {
                     onBackClicked = {
                         navController.popBackStack()
                     }) {
-                    CharacterDetailScreen(
-                        context
-                    )
+                    CharacterDetailScreen()
                 }
             }
         }

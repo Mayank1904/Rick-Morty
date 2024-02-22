@@ -1,7 +1,5 @@
 package com.mayank.presentation.features.detailscreen
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,26 +21,24 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.mayank.presentation.R
 import com.mayank.presentation.components.CharacterImage
+import com.mayank.presentation.components.ErrorScreen
 import com.mayank.presentation.components.ProgressBar
 import com.mayank.presentation.models.CharacterItem
 
 @Composable
-fun CharacterDetailScreen(context: Context) {
+fun CharacterDetailScreen() {
     val viewModel: CharacterDetailViewModel = hiltViewModel()
 
     val viewState = viewModel.stateFlow.collectAsState(initial = CharacterDetailViewState.Loading)
 
-    when (viewState.value) {
+    when (val viewStateValue = viewState.value) {
         is CharacterDetailViewState.Loading ->
             ProgressBar(modifier = Modifier.fillMaxSize())
 
         is CharacterDetailViewState.Success ->
-            DetailScreen((viewState.value as CharacterDetailViewState.Success).data)
+            DetailScreen(viewStateValue.data)
 
-        is CharacterDetailViewState.Error -> Toast.makeText(
-            context,
-            stringResource(R.string.no_network_connectivity), Toast.LENGTH_LONG
-        ).show()
+        is CharacterDetailViewState.Error -> ErrorScreen()
     }
 
 }

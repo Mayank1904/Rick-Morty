@@ -6,16 +6,23 @@ import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharacterByIdUseCase
 import com.mayank.presentation.base.BaseViewModel
 import com.mayank.presentation.constant.Constant
+import com.mayank.presentation.di.IODispatcher
+import com.mayank.presentation.di.MainDispatcher
 import com.mayank.presentation.mappers.CharacterMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(
     private val characterByIdUseCase: GetCharacterByIdUseCase,
     private val characterMapper: CharacterMapper,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher private val mainDispatcher: CoroutineDispatcher
+
 ) :
     BaseViewModel<CharacterDetailViewState, CharacterDetailViewIntent, CharacterDetailSideEffect>() {
 
@@ -25,15 +32,24 @@ class CharacterDetailViewModel @Inject constructor(
     }
 
     private fun fetchCharacterList(id: Int) =
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             when (val result = characterByIdUseCase(id)) {
-                is Result.Success -> state.emit(
-                    CharacterDetailViewState.Success(
-                        characterMapper.map(result.data)
-                    )
-                )
+                is Result.Success ->
+                    characterMapper.map(result.data).let {
+                        withContext(mainDispatcher) {
+                            state.emit(
+                                CharacterDetailViewState.Success(it)
+                            )
+                        }
+                    }
 
-                is Result.Error -> state.emit(CharacterDetailViewState.Error(result.exception))
+                is Result.Error -> withContext(mainDispatcher) {
+                    state.emit(
+                        CharacterDetailViewState.Error(
+                            result.exception
+                        )
+                    )
+                }
             }
         }
 

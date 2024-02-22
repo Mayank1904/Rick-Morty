@@ -6,7 +6,6 @@ import org.junit.Before
 import org.junit.Test
 
 class CharacterLocationMapperTest {
-
     private lateinit var characterLocationMapper: CharacterLocationMapper
 
     @Before
@@ -25,6 +24,6 @@ class CharacterLocationMapperTest {
     }
 
     private companion object {
-        const val LOCATION_NAME = "unknown"
+        const val LOCATION_NAME = "Earth"
     }
 }

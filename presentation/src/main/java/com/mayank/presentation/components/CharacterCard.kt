@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package com.mayank.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement

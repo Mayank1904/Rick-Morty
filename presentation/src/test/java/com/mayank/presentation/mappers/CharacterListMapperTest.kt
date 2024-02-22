@@ -8,7 +8,7 @@ import org.junit.Before
 import org.junit.Test
 
 class CharacterListMapperTest {
-    private var characterMapper = mockk<CharacterMapper>()
+    private val characterMapper = mockk<CharacterMapper>()
     private lateinit var characterListMapper: CharacterListMapper
 
     @Before

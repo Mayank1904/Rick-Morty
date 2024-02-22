@@ -4,15 +4,22 @@ import androidx.lifecycle.viewModelScope
 import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharactersUseCase
 import com.mayank.presentation.base.BaseViewModel
+import com.mayank.presentation.di.IODispatcher
+import com.mayank.presentation.di.MainDispatcher
 import com.mayank.presentation.mappers.CharacterListMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
-    private val characterListMapper: CharacterListMapper
+    private val characterListMapper: CharacterListMapper,
+    @IODispatcher var ioDispatcher: CoroutineDispatcher,
+    @MainDispatcher var mainDispatcher: CoroutineDispatcher
+
 ) :
     BaseViewModel<CharacterListViewState, CharacterListViewIntent, CharacterListSideEffect>() {
 
@@ -21,20 +28,25 @@ class CharacterListViewModel @Inject constructor(
     }
 
     private fun fetchCharacterList() {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             when (val result = getCharactersUseCase()) {
                 is Result.Success -> {
-                    state.emit(
-                        CharacterListViewState.Success(
-                            characterListMapper.map(
-                                result.data
+                    characterListMapper.map(
+                        result.data
+                    ).let {
+                        withContext(mainDispatcher) {
+                            state.emit(
+                                CharacterListViewState.Success(it)
                             )
-                        )
-                    )
+                        }
+                    }
+
                 }
 
                 is Result.Error -> {
-                    state.emit(CharacterListViewState.Error(result.exception))
+                    withContext(mainDispatcher) {
+                        state.emit(CharacterListViewState.Error(result.exception))
+                    }
                 }
             }
         }

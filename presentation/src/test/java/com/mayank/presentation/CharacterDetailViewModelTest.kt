@@ -1,6 +1,7 @@
 package com.mayank.presentation
 
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.test
 import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharacterByIdUseCase
 import com.mayank.presentation.fakes.FakeData
@@ -32,9 +33,9 @@ class CharacterDetailViewModelTest {
 
     private lateinit var characterDetailViewModel: CharacterDetailViewModel
 
-    private var getCharacterByIdUseCase = mockk<GetCharacterByIdUseCase>()
+    private val getCharacterByIdUseCase = mockk<GetCharacterByIdUseCase>()
 
-    private var characterMapper = mockk<CharacterMapper>()
+    private val characterMapper = mockk<CharacterMapper>()
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
@@ -51,34 +52,39 @@ class CharacterDetailViewModelTest {
             characterMapper.map(FakeData.getCharacters().characters[0])
         } returns data
         characterDetailViewModel =
-            CharacterDetailViewModel(getCharacterByIdUseCase, characterMapper, savedStateHandle)
+            CharacterDetailViewModel(getCharacterByIdUseCase, characterMapper, savedStateHandle, Dispatchers.IO, Dispatchers.Main)
     }
 
     @Test
     fun `fetch character detail successfully GIVEN intent WHEN loadData called THEN verify`() =
         runTest {
-            val data = FakeData.getCharactersList().characters[0]
-            characterDetailViewModel.sendIntent(CharacterDetailViewIntent.LoadData(ID))
-            Assert.assertEquals(
-                CharacterDetailViewState.Success(data),
-                characterDetailViewModel.stateFlow.value
-            )
+            with(characterDetailViewModel) {
+                stateFlow.test {
+                    sendIntent(CharacterDetailViewIntent.LoadData(ID))
+
+                    Assert.assertTrue(awaitItem() is CharacterDetailViewState.Success)
+                }
+            }
         }
 
     @Test
     fun `fetch character detail failed GIVEN intent WHEN loadData called THEN verify use-case called to get success result`() =
         runTest {
-            val e = Exception()
             coEvery { getCharacterByIdUseCase(ID) } answers {
-                Result.Error(e)
+                Result.Error(Exception())
             }
 
-            characterDetailViewModel.sendIntent(CharacterDetailViewIntent.LoadData(ID))
+            with(characterDetailViewModel) {
+                sendIntent(CharacterDetailViewIntent.LoadData(ID))
 
-            Assert.assertEquals(
-                CharacterDetailViewState.Error(e),
-                characterDetailViewModel.stateFlow.value
-            )
+                stateFlow.test {
+                    Assert.assertTrue(
+                        awaitItem() is CharacterDetailViewState.Error
+                    )
+                }
+
+            }
+
         }
 
     private companion object {

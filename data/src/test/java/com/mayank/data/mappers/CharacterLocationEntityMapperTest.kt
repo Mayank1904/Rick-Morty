@@ -18,8 +18,10 @@ class CharacterLocationEntityMapperTest {
         // Given
         val characterLocation =
             FakeCharactersList.getCharactersList().results[0].location
+
         // When
         val locationMapper = characterLocationEntityMapper.map(characterLocation)
+
         // Then
         Assert.assertEquals(locationMapper.name, LOCATION_NAME)
     }

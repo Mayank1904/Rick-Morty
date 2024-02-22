@@ -33,7 +33,6 @@ class GetCharactersUseCaseTest {
         runTest {
             // Given
             val characterListModel = FakeData.getCharacters()
-
             coEvery { characterRepository.getCharacters() } returns Result.Success(
                 characterListModel
             )
@@ -51,7 +50,6 @@ class GetCharactersUseCaseTest {
         runTest {
             // Given
             val exception = Exception(ERROR)
-
             coEvery { characterRepository.getCharacters() } returns Result.Error(exception)
 
             // When

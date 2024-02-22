@@ -9,7 +9,7 @@ import org.junit.Before
 import org.junit.Test
 
 class CharacterListEntityMapperTest {
-    private var characterEntityMapper = mockk<CharacterEntityMapper>()
+    private val characterEntityMapper = mockk<CharacterEntityMapper>()
     private lateinit var characterListEntityMapper: CharacterListEntityMapper
 
     @Before
@@ -21,7 +21,6 @@ class CharacterListEntityMapperTest {
     fun `GIVEN character list entity WHEN map is called THEN return character list model`() {
         // Given
         val characterListEntity = FakeCharactersList.getCharactersList()
-
         every {
             characterEntityMapper.map(any())
         } returns FakeCharactersList.getCharacterModel()
