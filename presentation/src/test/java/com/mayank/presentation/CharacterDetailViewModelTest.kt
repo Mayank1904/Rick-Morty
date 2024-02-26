@@ -52,7 +52,7 @@ class CharacterDetailViewModelTest {
             characterMapper.map(FakeData.getCharacters().characters[0])
         } returns data
         characterDetailViewModel =
-            CharacterDetailViewModel(getCharacterByIdUseCase, characterMapper, savedStateHandle, Dispatchers.IO, Dispatchers.Main)
+            CharacterDetailViewModel(getCharacterByIdUseCase, characterMapper, savedStateHandle, Dispatchers.IO)
     }
 
     @Test

@@ -49,7 +49,7 @@ class CharacterListViewModelTest {
 
         characterListViewModel = CharacterListViewModel(
             getCharactersUseCase,
-            characterListMapper, Dispatchers.IO, Dispatchers.Main
+            characterListMapper, Dispatchers.IO
         )
     }
 

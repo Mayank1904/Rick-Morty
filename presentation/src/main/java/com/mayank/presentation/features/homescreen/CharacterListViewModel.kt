@@ -5,12 +5,10 @@ import com.mayank.domain.Result
 import com.mayank.domain.usecases.GetCharactersUseCase
 import com.mayank.presentation.base.BaseViewModel
 import com.mayank.presentation.di.IODispatcher
-import com.mayank.presentation.di.MainDispatcher
 import com.mayank.presentation.mappers.CharacterListMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,8 +16,6 @@ class CharacterListViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val characterListMapper: CharacterListMapper,
     @IODispatcher var ioDispatcher: CoroutineDispatcher,
-    @MainDispatcher var mainDispatcher: CoroutineDispatcher
-
 ) :
     BaseViewModel<CharacterListViewState, CharacterListViewIntent, CharacterListSideEffect>() {
 
@@ -31,20 +27,18 @@ class CharacterListViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             when (val result = getCharactersUseCase()) {
                 is Result.Success -> {
-                    characterListMapper.map(
+                    val mappedData = characterListMapper.map(
                         result.data
-                    ).let {
-                        withContext(mainDispatcher) {
+                    )
+                    viewModelScope.launch {
                             state.emit(
-                                CharacterListViewState.Success(it)
+                                CharacterListViewState.Success(mappedData)
                             )
                         }
-                    }
-
                 }
 
                 is Result.Error -> {
-                    withContext(mainDispatcher) {
+                    viewModelScope.launch {
                         state.emit(CharacterListViewState.Error(result.exception))
                     }
                 }
